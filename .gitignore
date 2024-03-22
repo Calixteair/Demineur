@@ -2,3 +2,5 @@
 
 Makefile
 .qmake.stash
+tmp/*
+release/*
