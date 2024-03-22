@@ -3,14 +3,23 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QLabel>
+#include <QPixmap>
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 {
     layout = new QVBoxLayout(this);
 
+    // image de du logo
+    QLabel *logo = new QLabel;
+    QPixmap logoPixmap(":/img/mine.png");
+    logo->setPixmap(logoPixmap);
+    layout->addWidget(logo);
+
     playButton = new QPushButton("Jouer en solo", this);
     profileButton = new QPushButton("Profil", this);
     leaderboardButton = new QPushButton("Leaderboard", this);
+
 
     layout->addWidget(playButton);
     layout->addWidget(profileButton);
