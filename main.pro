@@ -1,7 +1,7 @@
 QT += widgets
 TEMPLATE = app
 TARGET = Demineur
-SOURCES += \
+SOURCES += main.cpp \
     Mainwindow.cpp
 DESTDIR = release
 OBJECTS_DIR = tmp
