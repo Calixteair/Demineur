@@ -1,6 +1,7 @@
 // MainWindow.cpp
 #include "MainWindow.h"
 #include "DifficultyWindow.h"
+#include "ProfileList.h"
 #include "RulesDialogue.h"
 #include "MainMenu.h"
 #include <QStackedWidget>
@@ -78,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     settingsMenu->addAction(nextSong);
     settingsMenu->addAction(prevSong);
-    
+
 
 
 
@@ -98,8 +99,11 @@ MainWindow::MainWindow(QWidget *parent)
     // Widget central
     stackedWidget = new QStackedWidget;
     difficultyWindow = new DifficultyWindow;
+    profileManager = new ProfileManager;
+    profileList = new ProfileList(profileManager);
     stackedWidget->addWidget(mainMenu);
     stackedWidget->addWidget(difficultyWindow);
+    stackedWidget->addWidget(profileList);
     setCentralWidget(stackedWidget);
 
     // Taille de la fenêtre
@@ -136,6 +140,8 @@ void MainWindow::openDifficultyWindow()
 void MainWindow::openProfileWindow()
 {
     qDebug() << "Ouverture de la fenêtre de profil";
+    stackedWidget->setCurrentWidget(profileList);
+
 }
 
 void MainWindow::openLeaderboardWindow()

@@ -1,12 +1,14 @@
-QT += widgets multimedia
-
+QT += widgets multimedia core
 TEMPLATE = app
 TARGET = Demineur
 SOURCES += main.cpp \
     Mainwindow.cpp \
     DifficultyWindow.cpp \
     MainMenu.cpp \
-    RulesDialogue.cpp
+    RulesDialogue.cpp \
+    Profile.cpp \
+    ProfileList.cpp \
+    ProfileManager.cpp
 DESTDIR = release
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -19,7 +21,10 @@ RESOURCES += resources.qrc
 
 HEADERS += \
     MainWindow.h \
-    DifficultyWindow.h \
+    DifficultyWindow.h \    
     MainMenu.h \ 
-    RulesDialogue.h
+    RulesDialogue.h \
+    Profile.h \
+    ProfileList.h \
+    ProfileManager.h
     

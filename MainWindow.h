@@ -12,6 +12,8 @@
 
 class QStackedWidget;
 class DifficultyWindow;
+class ProfileManager;
+class ProfileList;
 class MainMenu;
 class QMediaPlayer;
 
@@ -35,6 +37,8 @@ private slots:
 private:
     QStackedWidget *stackedWidget;
     DifficultyWindow *difficultyWindow;
+    ProfileManager *profileManager;
+    ProfileList *profileList;
     MainMenu *mainMenu; 
     QMenu *settingsMenu;
     QAction *muteAction;

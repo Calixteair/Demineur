@@ -1,5 +1,6 @@
 // MainMenu.cpp
 #include "MainMenu.h"
+#include "ProfileList.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QDebug>
