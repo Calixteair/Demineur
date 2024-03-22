@@ -38,9 +38,13 @@ private:
     MainMenu *mainMenu; 
     QMenu *settingsMenu;
     QAction *muteAction;
+    QAction *prevSong;
+    QAction *nextSong;
     QSlider *volumeSlider;
-    QMediaPlayer *music;
+
     QMediaPlaylist *playlist;
+    QMediaPlayer *music;
+    QWidget *navbar;
 };
 
 #endif // MAINWINDOW_H

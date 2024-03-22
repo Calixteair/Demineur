@@ -22,14 +22,26 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu = new MainMenu(this);
 
     // navbar
-    QWidget *navbar = new QWidget;
-    QHBoxLayout *navbarLayout = new QHBoxLayout;
-    QPushButton *homeButton = new QPushButton("Accueil");
-    QPushButton *helpButton = new QPushButton("Aide");
+
+    navbar = new QWidget(this);
+    navbar->setFixedHeight(50);
+    navbar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    navbar->setContentsMargins(0, 0, 0, 0);
+    navbar->setObjectName("navbar");
+    navbar->setStyleSheet("QWidget#navbar { background-color: rgb(50, 50, 50); }");
+    QHBoxLayout *navbarLayout = new QHBoxLayout(navbar);
+    QPushButton *homeButton = new QPushButton("Accueil", navbar);
+    //homeButton->setStyleSheet("QPushButton { color: white; }");
+    QMenu *settingsMenu = new QMenu("Paramètres", navbar);
+    settingsMenu->adjustSize();
+    //settingsMenu->setStyleSheet("QPushButton { color: white; }");
+    QPushButton *helpButton = new QPushButton("Aide", navbar);
+    //helpButton->setStyleSheet("QPushButton { color: white; }");
     navbarLayout->addWidget(homeButton);
-    
+    navbarLayout->addWidget(settingsMenu);
     navbarLayout->addWidget(helpButton);
-    navbar->setLayout(navbarLayout);
+
+    // Définir la navbar comme barre de menus
     setMenuWidget(navbar);
 
     connect(homeButton, &QPushButton::clicked, this, &MainWindow::openMainWindow);
@@ -40,7 +52,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Créer le menu déroulant "Paramètres"
-    settingsMenu = new QMenu("Paramètres", this);
 
     // Créer l'action "Mute"
     muteAction = new QAction("Mute", this);
@@ -54,6 +65,22 @@ MainWindow::MainWindow(QWidget *parent)
     volumeSlider->setRange(0, 100);
     volumeSlider->setValue(50);
     QObject::connect(volumeSlider, &QSlider::valueChanged, this, &MainWindow::setVolume);
+
+    nextSong = new QAction("Next music", this);
+    QObject::connect(nextSong, &QAction::triggered, [this]() {
+        playlist->next();
+    });
+
+    prevSong = new QAction("Previous music", this);
+    QObject::connect(prevSong, &QAction::triggered, [this]() {
+        playlist->previous();
+    });
+
+    settingsMenu->addAction(nextSong);
+    settingsMenu->addAction(prevSong);
+    
+
+
 
     // Créer une action pour le curseur de volume
     QWidgetAction *volumeAction = new QWidgetAction(this);
@@ -80,11 +107,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Musique de fond
 
-    QMediaPlaylist *playlist = new QMediaPlaylist();
+    playlist = new QMediaPlaylist(this);
     playlist->addMedia(QUrl("qrc:/music/let-the-games-begin-21858.mp3"));
     playlist->addMedia(QUrl("qrc:/music/neon-gaming-128925.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    QMediaPlayer *music = new QMediaPlayer();
+    music = new QMediaPlayer(this);
     music->setPlaylist(playlist);
     music->play();
 
