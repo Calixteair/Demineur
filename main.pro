@@ -6,3 +6,5 @@ SOURCES += \
 DESTDIR = release
 OBJECTS_DIR = tmp
 
+HEADERS += \
+    MainWindow.h

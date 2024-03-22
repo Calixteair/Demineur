@@ -1,5 +1,5 @@
 // mainwindow.cpp
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
