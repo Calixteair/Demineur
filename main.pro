@@ -2,7 +2,9 @@ QT += widgets
 TEMPLATE = app
 TARGET = Demineur
 SOURCES += main.cpp \
-    Mainwindow.cpp
+    Mainwindow.cpp \
+    DifficultyWindow.cpp \
+    MainMenu.cpp
 DESTDIR = release
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -13,4 +15,7 @@ HEADERS += \
     MainWindow.h
 
 HEADERS += \
-    MainWindow.h
+    MainWindow.h \
+    DifficultyWindow.h \
+    MainMenu.h
+    

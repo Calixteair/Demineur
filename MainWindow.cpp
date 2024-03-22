@@ -1,43 +1,70 @@
-// mainwindow.cpp
+// MainWindow.cpp
 #include "MainWindow.h"
-#include <QVBoxLayout>
-#include <QLabel>
+#include "DifficultyWindow.h"
+#include "MainMenu.h"
+#include <QStackedWidget>
+#include <QDebug>
 #include <QPushButton>
+#include <QWidget>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Layout principal
-    QVBoxLayout *layout = new QVBoxLayout;
+    // Création du menu principal
+    mainMenu = new MainMenu(this);
 
-    // Titre
-    QLabel *titleLabel = new QLabel("Démineur");
-    titleLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(titleLabel);
+    // navbar
+    QWidget *navbar = new QWidget;
+    QHBoxLayout *navbarLayout = new QHBoxLayout;
+    QPushButton *homeButton = new QPushButton("Accueil");
+    QPushButton *settingsButton = new QPushButton("Paramètres");
+    QPushButton *helpButton = new QPushButton("Aide");
+    navbarLayout->addWidget(homeButton);
+    navbarLayout->addWidget(settingsButton);
+    navbarLayout->addWidget(helpButton);
+    navbar->setLayout(navbarLayout);
+    setMenuWidget(navbar);
 
-    // Logo
-    QLabel *logoLabel = new QLabel;
-    QPixmap logoPixmap(":/img/mine.png"); // Chemin vers votre image
-    logoLabel->setPixmap(logoPixmap);
-    logoLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(logoLabel);
-
-    // Boutons du menu
-    QPushButton *playButton = new QPushButton("Jouer en solo");
-    layout->addWidget(playButton);
-
-    QPushButton *profileButton = new QPushButton("Profil");
-    layout->addWidget(profileButton);
-
-    QPushButton *leaderboardButton = new QPushButton("Leaderboard");
-    layout->addWidget(leaderboardButton);
+    connect(homeButton, &QPushButton::clicked, this, &MainWindow::openMainWindow);
 
     // Widget central
-    QWidget *centralWidget = new QWidget;
-    centralWidget->setLayout(layout);
-    setCentralWidget(centralWidget);
+    stackedWidget = new QStackedWidget;
+    difficultyWindow = new DifficultyWindow;
+    stackedWidget->addWidget(mainMenu);
+    stackedWidget->addWidget(difficultyWindow);
+    setCentralWidget(stackedWidget);
+
+    // Taille de la fenêtre
+    resize(400, 300);
+
+    QObject::connect(mainMenu, &MainMenu::playClicked, this, &MainWindow::openDifficultyWindow);
+    QObject::connect(mainMenu, &MainMenu::profileClicked, this, &MainWindow::openProfileWindow);
+    QObject::connect(mainMenu, &MainMenu::leaderboardClicked, this, &MainWindow::openLeaderboardWindow);
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::openDifficultyWindow()
+{
+    qDebug() << "Ouverture de la fenêtre de sélection de difficulté";
+    stackedWidget->setCurrentWidget(difficultyWindow);
+}
+
+void MainWindow::openProfileWindow()
+{
+    qDebug() << "Ouverture de la fenêtre de profil";
+}
+
+void MainWindow::openLeaderboardWindow()
+{
+    qDebug() << "Ouverture de la fenêtre de leaderboard";
+}
+
+void MainWindow::openMainWindow()
+{
+    qDebug() << "Ouverture de la fenêtre de jeu";
+    stackedWidget->setCurrentWidget(mainMenu);
 }
