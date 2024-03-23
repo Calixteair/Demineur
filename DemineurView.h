@@ -5,6 +5,8 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include "Demineur.h"
+#include <QMouseEvent> // Ajout de l'inclusion pour utiliser QMouseEvent
+
 
 class DemineurView : public QWidget
 {
@@ -17,6 +19,7 @@ private:
     QGridLayout *gridLayout;
     Demineur *demineur;
     QVector<QPushButton*> buttons;
+    void mousePressEvent(QMouseEvent *event);
 
     void createGrid(int nbLigne, int nbColonne);
     void updateGrid();
