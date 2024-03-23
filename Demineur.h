@@ -16,12 +16,21 @@ public:
         INIT,
         EN_COURS,
         GAGNE,
-        PERDU
+        PERDU,
+        ERROR
     };
 
     Etat gameState;
 
     Demineur(int lignes, int colonnes, int mines);
+
+    Demineur(const char* filename);
+
+    Demineur();
+
+    int importeGame(const char *filename);
+    
+    void sauvegarderGame(const char *filename);
 
     void initialiserGrille();
 
