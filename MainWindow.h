@@ -33,6 +33,8 @@ private slots:
     private slots:
     void toggleMute();
     void setVolume(int volume);
+    void openDemineurPageWithDifficulty(int rows, int cols, int mines);
+
 
 private:
     QStackedWidget *stackedWidget;

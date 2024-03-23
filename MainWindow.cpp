@@ -16,6 +16,8 @@
 #include <QWidgetAction>
 #include <QMenuBar>
 
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -104,6 +106,7 @@ MainWindow::MainWindow(QWidget *parent)
     stackedWidget->addWidget(mainMenu);
     stackedWidget->addWidget(difficultyWindow);
     stackedWidget->addWidget(profileList);
+
     setCentralWidget(stackedWidget);
 
     // Taille de la fenêtre
@@ -123,13 +126,28 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(mainMenu, &MainMenu::playClicked, this, &MainWindow::openDifficultyWindow);
     QObject::connect(mainMenu, &MainMenu::profileClicked, this, &MainWindow::openProfileWindow);
     QObject::connect(mainMenu, &MainMenu::leaderboardClicked, this, &MainWindow::openLeaderboardWindow);
+
+    QObject::connect(difficultyWindow, &DifficultyWindow::demineurViewRequested, this, &MainWindow::openDemineurPageWithDifficulty);
 }
 
 MainWindow::~MainWindow()
 {
     delete playlist;
     delete music;
+    delete stackedWidget;
+    delete mainMenu;
+    delete difficultyWindow;
+    delete profileList;
 }
+
+
+void MainWindow::openDemineurPageWithDifficulty(int rows, int cols, int mines) {
+    // Créez une instance de DemineurPage en fonction de la difficulté choisie
+    DemineurView *newDemineurPage = new DemineurView(rows, cols, mines, this);
+    stackedWidget->addWidget(newDemineurPage);
+    stackedWidget->setCurrentWidget(newDemineurPage);
+}
+
 
 void MainWindow::openDifficultyWindow()
 {

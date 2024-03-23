@@ -268,4 +268,51 @@ Demineur::Etat Demineur::getState()
     return gameState;
 }
 
+
+int *Demineur::getGrille()
+{
+    return &grille[0][0];
+}
+
+int Demineur::getNbLignes()
+{
+    return nbLignes;
+}
+
+int Demineur::getNbColonnes()
+{
+    return nbColonnes;
+}
+
+int Demineur::getNbMines()
+{
+    return nbMines;
+}
+
+int Demineur::getCellValue(int x, int y)
+{
+    return grille[y][x];
+}
+
+int Demineur::getCellState(int x, int y)
+{
+    return grilleCachee[y][x];
+}
+
+void Demineur::showAll()
+{
+    for (int i = 0; i < nbLignes; ++i)
+    {
+        for (int j = 0; j < nbColonnes; ++j)
+        {
+            grilleCachee[i][j] = 1;
+        }
+    }
+}
+
+int *Demineur::getGrilleCachee()
+{
+    return &grilleCachee[0][0];
+}
+
 Demineur::~Demineur() {}

@@ -41,6 +41,24 @@ public:
     void marquerCase(int x, int y);
 
     Etat getState();
+
+    int* getGrille();
+
+    int* getGrilleCachee();
+
+    int getNbLignes();
+
+    int getNbColonnes();
+
+    int getNbMines();
+
+    int getCellValue(int x, int y);
+
+    int getCellState(int x, int y);
+
+    void showAll();
+
+
     
 
 

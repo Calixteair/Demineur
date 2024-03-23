@@ -8,7 +8,9 @@ SOURCES += main.cpp \
     RulesDialogue.cpp \
     Profile.cpp \
     ProfileList.cpp \
-    ProfileManager.cpp
+    ProfileManager.cpp \
+    Demineur.cpp \
+    DemineurView.cpp
 DESTDIR = release
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -26,5 +28,7 @@ HEADERS += \
     RulesDialogue.h \
     Profile.h \
     ProfileList.h \
-    ProfileManager.h
+    ProfileManager.h \
+    Demineur.h \
+    DemineurView.h 
     
