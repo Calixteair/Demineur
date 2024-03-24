@@ -143,22 +143,22 @@ void Demineur::initialiserGrille()
         }
     }
 
-    // Affichage de la grille
-    for (int i = 0; i < nbLignes; ++i)
-    {
-        for (int j = 0; j < nbColonnes; ++j)
-        {
-            if(grille[i][j] == -1)
-            {
-                cout << "X ";
-            }
-            else
-            {
-                cout << grille[i][j] << " ";
-            }
-        }
-        cout << endl;
-    }
+    // // Affichage de la grille
+    // for (int i = 0; i < nbLignes; ++i)
+    // {
+    //     for (int j = 0; j < nbColonnes; ++j)
+    //     {
+    //         if(grille[i][j] == -1)
+    //         {
+    //             cout << "X ";
+    //         }
+    //         else
+    //         {
+    //             cout << grille[i][j] << " ";
+    //         }
+    //     }
+    //     cout << endl;
+    // }
 }
 
 
@@ -217,22 +217,6 @@ void Demineur::initialiserGrille()
         }
 
 
-         // Affichage de la grille
-    for (int i = 0; i < nbLignes; ++i)
-    {
-        for (int j = 0; j < nbColonnes; ++j)
-        {
-            if(grille[i][j] == -1)
-            {
-                cout << "X ";
-            }
-            else
-            {
-                cout << grille[i][j] << " ";
-            }
-        }
-        cout << endl;
-    }
 
 
     }
@@ -254,20 +238,16 @@ bool Demineur::play(int x, int y)
     
     if (x < 0 || x >= nbColonnes || y < 0 || y >= nbLignes)
     {
-        cout << "Colonne = " << nbColonnes << " Ligne = " << nbLignes << endl;
-        cout << "Coordonnées invalides" << x << "," << y << endl;
         return true;
     }
 
     if (grilleCachee[y][x] != 0)
     {
-        cout << "Case déjà découverte" << endl;
-        return true;
+                return true;
     }
 
     if (grille[y][x] == -1)
     {
-        cout << "Vous avez perdu !" << endl;
         gameState = PERDU;
         grilleCachee[y][x] = -1;
         return false;

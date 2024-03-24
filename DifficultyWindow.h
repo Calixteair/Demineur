@@ -4,6 +4,8 @@
 #define DIFFICULTYWINDOW_H
 
 #include <QWidget>
+#include <QLineEdit>
+
 
 // Ajoutez l'inclusion nécessaire pour DemineurView si elle n'est pas déjà incluse
 #include "DemineurView.h"
@@ -16,6 +18,8 @@ public:
     explicit DifficultyWindow(QWidget *parent = nullptr);
     void launchDemineurView(int rows, int cols, int mines);
     void loadGame(QString filePath);
+    bool validateInput(QLineEdit *rowsLineEdit, QLineEdit *colsLineEdit, QLineEdit *minesLineEdit);
+
 
 
 
@@ -24,7 +28,8 @@ signals:
     void demineurViewRequestedWithFile(QString filePath);
 
 
-
+private slots:
+    void showCustomDialog();
 
 
 private:

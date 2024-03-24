@@ -10,6 +10,10 @@
 #include <QFile>
 #include <QDir>
 #include <QDebug>
+#include <QLineEdit>
+#include <QIntValidator>
+#include <QDialogButtonBox>
+
 
 DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
 {
@@ -33,9 +37,8 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
     connect(expertButton, &QPushButton::clicked, this, [=]() {
         launchDemineurView(30, 16, 99);
     });
-    connect(customButton, &QPushButton::clicked, this, [=]() {
-        // Mettez en œuvre la logique pour permettre à l'utilisateur de définir une configuration personnalisée
-    });
+    connect(customButton, &QPushButton::clicked, this, &DifficultyWindow::showCustomDialog);
+
 
     connect (loadGameButton, &QPushButton::clicked, this, [=]() {
         // Demande un fichier en utilisant QFileDialog pour charger une partie sauvegardée
@@ -83,6 +86,81 @@ void DifficultyWindow::loadGame(QString filePath)
 
     emit demineurViewRequestedWithFile(filePath);
 
+}
+
+
+
+void DifficultyWindow::showCustomDialog()
+{
+    QDialog customDialog(this);
+    customDialog.setWindowTitle("Configuration personnalisée");
+
+    QVBoxLayout *layout = new QVBoxLayout(&customDialog);
+
+    QLabel *rowsLabel = new QLabel("Lignes:");
+    QLineEdit *rowsLineEdit = new QLineEdit(&customDialog);
+    QLabel *colsLabel = new QLabel("Colonnes:");
+    QLineEdit *colsLineEdit = new QLineEdit(&customDialog);
+    QLabel *minesLabel = new QLabel("Mines:");
+    QLineEdit *minesLineEdit = new QLineEdit(&customDialog);
+
+    layout->addWidget(rowsLabel);
+    layout->addWidget(rowsLineEdit);
+    layout->addWidget(colsLabel);
+    layout->addWidget(colsLineEdit);
+    layout->addWidget(minesLabel);
+    layout->addWidget(minesLineEdit);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                                                       Qt::Horizontal, &customDialog);
+    layout->addWidget(buttonBox);
+
+    // Connexion personnalisée pour activer/désactiver le bouton OK en fonction de la validité des valeurs
+    QObject::connect(rowsLineEdit, &QLineEdit::textChanged, [&]() {
+        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(validateInput(rowsLineEdit, colsLineEdit, minesLineEdit));
+    });
+    QObject::connect(colsLineEdit, &QLineEdit::textChanged, [&]() {
+        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(validateInput(rowsLineEdit, colsLineEdit, minesLineEdit));
+    });
+    QObject::connect(minesLineEdit, &QLineEdit::textChanged, [&]() {
+        buttonBox->button(QDialogButtonBox::Ok)->setEnabled(validateInput(rowsLineEdit, colsLineEdit, minesLineEdit));
+    });
+
+    QObject::connect(buttonBox, &QDialogButtonBox::accepted, &customDialog, [&]() {
+        if (validateInput(rowsLineEdit, colsLineEdit, minesLineEdit)) {
+            customDialog.accept();
+        }
+    });
+    QObject::connect(buttonBox, &QDialogButtonBox::rejected, &customDialog, &QDialog::reject);
+
+    if (customDialog.exec() == QDialog::Accepted) {
+        int rows = rowsLineEdit->text().toInt();
+        int cols = colsLineEdit->text().toInt();
+        int mines = minesLineEdit->text().toInt();
+        launchDemineurView(rows, cols, mines);
+    }
+}
+
+bool DifficultyWindow::validateInput(QLineEdit *rowsLineEdit, QLineEdit *colsLineEdit, QLineEdit *minesLineEdit)
+{
+    bool ok;
+    int rows = rowsLineEdit->text().toInt(&ok);
+    if (!ok || rows < 4 || rows > 100) {
+        return false;
+    }
+
+    int cols = colsLineEdit->text().toInt(&ok);
+    if (!ok || cols < 4 || cols > 100) {
+        return false;
+    }
+
+    int maxMines = rows * cols - 9;
+    int mines = minesLineEdit->text().toInt(&ok);
+    if (!ok || mines < 1 || mines > maxMines) {
+        return false;
+    }
+
+    return true;
 }
 
 

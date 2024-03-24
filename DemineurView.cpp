@@ -162,8 +162,6 @@ void DemineurView::createGrid(int nbLigne, int nbColonne) {
                                    "}");
 
             gridLayout->addWidget(button, i, j);
-                    button->setText( QString::number(j) + "," + QString::number(i));
-
             buttons.push_back(button);
             connect(button, &QPushButton::clicked, this, [this, j, i] {
 
