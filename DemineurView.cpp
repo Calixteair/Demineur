@@ -4,7 +4,6 @@
 #include <QPushButton>
 #include <QMouseEvent> // Ajout de l'inclusion pour utiliser QMouseEvent
 #include "DemineurView.h"
-
 DemineurView::DemineurView(int rows, int cols, int mines, QWidget *parent) :
     QWidget(parent), demineur(new Demineur(rows, cols, mines))
 {
@@ -20,6 +19,13 @@ DemineurView::DemineurView(int rows, int cols, int mines, QWidget *parent) :
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(scrollArea);
 
+    // Définir une taille fixe pour la grille en fonction du nombre de lignes et de colonnes
+    int gridSize = qMax(rows, cols) * 50 + 4; // Calculer la taille en fonction du nombre maximum de lignes ou de colonnes
+    scrollWidget->setFixedSize(gridSize, gridSize);
+
+    // Désactiver le redimensionnement automatique de la fenêtre principale
+    setFixedSize(gridSize + 20, gridSize + 40); // Ajouter une marge pour la barre de titre et les bordures de la fenêtre
+
     createGrid(rows, cols);
 }
 
@@ -29,7 +35,7 @@ void DemineurView::createGrid(int nbLigne, int nbColonne) {
             QPushButton *button = new QPushButton;
             button->setFixedSize(50, 50);
             button->setStyleSheet("QPushButton {"
-                                   "background-color: #858585;"
+                                   "background-color: #bdbdbd;"
                                    "border-style: outset;"
                                    "border-width: 2px;"
                                    "border-radius: 10px;"
@@ -82,22 +88,44 @@ void DemineurView::updateButton(int x, int y) {
         button->setText("");
         button->setIcon(QIcon()); // Efface l'icône
     } else if(cellState == 1 && cellValue != -1) {
-        button->setStyleSheet("QPushButton {"
-                                   "background-color: #c0c0c0;"
-                                   "border-style: outset;"
-                                   "border-width: 2px;"
-                                   "border-radius: 10px;"
-                                   "border-color: beige;"
-                                   "font: bold 14px;"
-                                   "padding: 6px;"
-                                   "}"
-                                   "QPushButton:hover {"
-                                   "background-color: #dcdcdc;"
-                                   "}"
-                                   "QPushButton:pressed {"
-                                   "background-color: #b0b0b0;"
-                                   "}");
-        int cellValue = demineur->getCellValue(x, y);
+         QString backgroundColor;
+        switch (cellValue) {
+            case 1:
+                backgroundColor = "#ADD8E6"; // Blue
+                break;
+            case 2:
+                backgroundColor = "#90EE90"; // Green
+                break;
+            case 3:
+                backgroundColor = "#FFA07A"; // Light Coral
+                break;
+            case 4:
+                backgroundColor = "#FFB6C1"; // Light Pink
+                break;
+            case 5:
+                backgroundColor = "#FFD700"; // Gold
+                break;
+            case 6:
+                backgroundColor = "#20B2AA"; // Light Sea Green
+                break;
+            case 7:
+                backgroundColor = "#87CEEB"; // Sky Blue
+                break;
+            case 8:
+                backgroundColor = "#C0C0C0"; // Silver
+                break;
+            default:
+                backgroundColor = "#FFFFFF"; // White
+        }
+        button->setStyleSheet(QString("QPushButton {"
+                                       "background-color: %1;" // Couleur différente pour chaque chiffre
+                                       "border-style: outset;"
+                                       "border-width: 2px;"
+                                       "border-radius: 10px;"
+                                       "border-color: beige;"
+                                       "font: bold 14px;"
+                                       "padding: 6px;"
+                                       "}").arg(backgroundColor));
         button->setText(QString::number(cellValue));
         button->setIcon(QIcon()); // Efface l'icône
     } else if ( cellState == 1 && cellValue == -1) {
