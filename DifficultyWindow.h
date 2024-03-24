@@ -15,10 +15,14 @@ class DifficultyWindow : public QWidget
 public:
     explicit DifficultyWindow(QWidget *parent = nullptr);
     void launchDemineurView(int rows, int cols, int mines);
+    void loadGame(QString filePath);
+
 
 
 signals:
     void demineurViewRequested(int rows, int cols, int mines);
+    void demineurViewRequestedWithFile(QString filePath);
+
 
 
 

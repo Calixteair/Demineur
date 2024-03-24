@@ -34,6 +34,9 @@ private slots:
     void toggleMute();
     void setVolume(int volume);
     void openDemineurPageWithDifficulty(int rows, int cols, int mines);
+    void openDemineurPageWithFilePATH(QString filePath);
+    void BackToMainPage();
+
 
 
 private:

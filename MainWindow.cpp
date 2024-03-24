@@ -128,6 +128,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(mainMenu, &MainMenu::leaderboardClicked, this, &MainWindow::openLeaderboardWindow);
 
     QObject::connect(difficultyWindow, &DifficultyWindow::demineurViewRequested, this, &MainWindow::openDemineurPageWithDifficulty);
+    QObject::connect(difficultyWindow, &DifficultyWindow::demineurViewRequestedWithFile, this, &MainWindow::openDemineurPageWithFilePATH);
 }
 
 MainWindow::~MainWindow()
@@ -144,8 +145,24 @@ MainWindow::~MainWindow()
 void MainWindow::openDemineurPageWithDifficulty(int rows, int cols, int mines) {
     // Créez une instance de DemineurPage en fonction de la difficulté choisie
     DemineurView *newDemineurPage = new DemineurView(rows, cols, mines, this);
+
+    QObject::connect(newDemineurPage, &DemineurView::BackToMain, this, &MainWindow::BackToMainPage);
+
     stackedWidget->addWidget(newDemineurPage);
     stackedWidget->setCurrentWidget(newDemineurPage);
+}
+
+void MainWindow::openDemineurPageWithFilePATH(QString filePath) {
+    // Créez une instance de DemineurPage en fonction du fichier de sauvegarde
+    DemineurView *newDemineurPage = new DemineurView(filePath, this);
+    stackedWidget->addWidget(newDemineurPage);
+    stackedWidget->setCurrentWidget(newDemineurPage);
+
+}
+
+void MainWindow::BackToMainPage()
+{
+    stackedWidget->setCurrentWidget(mainMenu);
 }
 
 

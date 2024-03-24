@@ -14,6 +14,7 @@ class DemineurView : public QWidget
     
 public:
     DemineurView(int rows, int cols, int mines, QWidget *parent);
+    DemineurView(QString filePath, QWidget *parent);
 
 private:
     QGridLayout *gridLayout;
@@ -29,6 +30,11 @@ private:
     void showAll();
     void showWin();
     void showLoose(); 
+    void ResetGame();
+
+
+signals:
+    void BackToMain();
 };
 
 #endif // DEMINEURVIEW_H

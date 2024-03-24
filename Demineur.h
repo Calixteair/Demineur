@@ -34,9 +34,13 @@ public:
 
     void initialiserGrille();
 
+    void initialiserGrilleXY(int x, int y);
+
     bool play(int x, int y);
 
     void afficherGrille();
+
+    void resetGame();
 
     void marquerCase(int x, int y);
 

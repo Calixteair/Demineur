@@ -58,6 +58,7 @@ int Demineur::importeGame(const char *filename)
 
 void Demineur::sauvegarderGame(const char *filename)
 {
+
     ofstream file(filename);
     if (!file.is_open())
     {
@@ -147,11 +148,97 @@ void Demineur::initialiserGrille()
     {
         for (int j = 0; j < nbColonnes; ++j)
         {
-            cout << grille[i][j] << " ";
+            if(grille[i][j] == -1)
+            {
+                cout << "X ";
+            }
+            else
+            {
+                cout << grille[i][j] << " ";
+            }
         }
         cout << endl;
     }
 }
+
+
+    void Demineur::initialiserGrilleXY(int x, int y){
+         for (int i = 0; i < nbLignes; ++i)
+        {
+        for (int j = 0; j < nbColonnes; ++j)
+        {
+            grille[i][j] = 0;
+            grilleCachee[i][j] = 0;
+        }
+        }
+
+        // Placer les mines sauf sur les cases 3 * 3 de centre x,y
+
+        srand(time(nullptr));
+        for (int i = 0; i < nbMines; ++i)
+        {
+            int k = rand() % nbLignes;
+            int l = rand() % nbColonnes;
+            if (grille[k][l] == -1 || (k >= y - 1 && k <= y + 1 && l >= x - 1 && l <= x + 1))
+            {
+                --i;
+            }
+            else
+            {
+                grille[k][l] = -1;
+            }
+        }
+
+        // Calculer les nombres de mines adjacentes
+        for (int i = 0; i < nbLignes; ++i)
+        {
+            for (int j = 0; j < nbColonnes; ++j)
+            {
+                if (grille[i][j] == -1)
+                {
+                    continue;
+                }
+                for (int k = -1; k <= 1; ++k)
+                {
+                    for (int l = -1; l <= 1; ++l)
+                    {
+                        int newX = i + k;
+                        int newY = j + l;
+                        if (newX >= 0 && newX < nbLignes && newY >= 0 && newY < nbColonnes)
+                        {
+                            if (grille[newX][newY] == -1)
+                            {
+                                ++grille[i][j];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+         // Affichage de la grille
+    for (int i = 0; i < nbLignes; ++i)
+    {
+        for (int j = 0; j < nbColonnes; ++j)
+        {
+            if(grille[i][j] == -1)
+            {
+                cout << "X ";
+            }
+            else
+            {
+                cout << grille[i][j] << " ";
+            }
+        }
+        cout << endl;
+    }
+
+
+    }
+
+
+
 bool Demineur::play(int x, int y)
 {
 
@@ -159,18 +246,28 @@ bool Demineur::play(int x, int y)
     {
         while (grille[y][x] != 0)
         {
-            initialiserGrille();
+            initialiserGrilleXY(x, y);
         }
         gameState = EN_COURS;
     }
 
+    
     if (x < 0 || x >= nbColonnes || y < 0 || y >= nbLignes)
     {
+        cout << "Colonne = " << nbColonnes << " Ligne = " << nbLignes << endl;
+        cout << "Coordonnées invalides" << x << "," << y << endl;
+        return true;
+    }
+
+    if (grilleCachee[y][x] != 0)
+    {
+        cout << "Case déjà découverte" << endl;
         return true;
     }
 
     if (grille[y][x] == -1)
     {
+        cout << "Vous avez perdu !" << endl;
         gameState = PERDU;
         grilleCachee[y][x] = -1;
         return false;
@@ -261,7 +358,17 @@ void Demineur::afficherGrille()
         }
         cout << endl;
     }
+
+    cout << endl;
 }
+
+
+void Demineur::resetGame()
+{
+    gameState = INIT;
+    initialiserGrille();
+}
+
 
 Demineur::Etat Demineur::getState()
 {
