@@ -89,6 +89,7 @@ void ProfileList::handleAddProfileClicked()
     if (avatarPath.isEmpty()) {
         return;
     }
+    qDebug() << "Avatar path: " << avatarPath;
 
     QPixmap avatar(avatarPath);
     if (avatar.isNull()) {
@@ -96,7 +97,7 @@ void ProfileList::handleAddProfileClicked()
         return;
     }
 
-    Profile *newProfile = new Profile(name, avatar);
+    Profile *newProfile = new Profile(name, avatarPath);
     profileManager->addProfile(newProfile); // Ajoute le nouveau profil au ProfileManager
     profileManager->saveProfiles(newProfile); // Sauvegarde les profils
     addProfile(newProfile);

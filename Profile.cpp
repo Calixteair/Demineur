@@ -3,7 +3,7 @@
 #include <QDataStream>
 #include <QDebug>
 
-Profile::Profile(const QString &name, const QPixmap &avatar) : m_name(name), m_avatar(avatar)
+Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_avatar(avatar)
 {
     // Initialize records to 0
     for (int i = 0; i < 3; ++i) {
@@ -20,7 +20,7 @@ QString Profile::getName() const
     return m_name;
 }
 
-QPixmap Profile::getAvatar() const
+QString Profile::getAvatarPath() const
 {
     return m_avatar;
 }
@@ -39,7 +39,7 @@ void Profile::setName(const QString &name)
     m_name = name;
 }
 
-void Profile::setAvatar(const QPixmap &avatar)
+void Profile::setAvatar(const QString &avatar)
 {
     m_avatar = avatar;
 }
@@ -76,7 +76,7 @@ Profile* Profile::loadProfile(const QString &filePath)
 
     QDataStream in(&file);
     QString name;
-    QPixmap avatar;
+    QString avatar;
     int records[3];
     in >> name >> avatar >> records[0] >> records[1] >> records[2];
 

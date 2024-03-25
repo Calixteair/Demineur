@@ -50,6 +50,7 @@ private:
     QAction *prevSong;
     QAction *nextSong;
     QSlider *volumeSlider;
+    QString *currentProfile;
 
     QMediaPlaylist *playlist;
     QMediaPlayer *music;

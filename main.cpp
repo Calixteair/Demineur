@@ -1,5 +1,8 @@
 #include <QApplication>
 #include "MainWindow.h"
+#include <QStandardPaths>
+#include <QDir>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

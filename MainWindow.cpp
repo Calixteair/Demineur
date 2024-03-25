@@ -15,6 +15,9 @@
 #include <QSlider>
 #include <QWidgetAction>
 #include <QMenuBar>
+#include <QStandardPaths>
+#include <QDir>
+
 
 
 
@@ -23,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // Création du menu principal
     mainMenu = new MainMenu(this);
+
+    QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+    qDebug() << profilesPath;
+    QDir().mkpath(profilesPath);
 
     // navbar
 
