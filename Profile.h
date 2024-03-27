@@ -31,6 +31,7 @@ public:
     int getMediumRecord();
     int getHardRecord();
     QString getAvatarPath();
+    QString getUuid();
 
 
 

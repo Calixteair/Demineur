@@ -20,6 +20,8 @@ ProfileManager::ProfileManager()
     
 {
     profiles = QList<Profile*>();
+    profile = nullptr;
+    profileSelected = false;
 }
 
 QList<Profile*> ProfileManager::getProfiles()

@@ -110,6 +110,10 @@ void Profile::setUuid(const QString &uuid)
     m_uuid = uuid;
 }
 
+QString Profile::getUuid(){
+    return m_uuid;
+}
+
 void Profile::setPartiesJouer(int partiesJouer)
 {
     m_partiesJouer = partiesJouer;

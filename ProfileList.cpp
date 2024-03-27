@@ -1,5 +1,7 @@
 #include "ProfileList.h"
 #include "ProfileManager.h" // Assurez-vous d'inclure le ProfileManager
+#include "Profile.h"
+#include "MainMenu.h"
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -11,6 +13,7 @@
 #include <QList>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QCheckBox>
 
 #include <QVBoxLayout>
 
@@ -31,7 +34,14 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
     connect(deleteButton, &QPushButton::clicked, this, &ProfileList::handleDeleteProfileClicked);
     layout->addWidget(deleteButton);
     profiles = profileManager->getProfiles();
+
+    playButton = new QPushButton("Jouer", this);
+    layout->addWidget(playButton);
+    QObject::connect(playButton, &QPushButton::clicked, this, &ProfileList::handlePlayButtonClicked);
+    
+    updatePlayButtonState();
     loadProfiles(); // Charge les profils existants
+
 }
 
 void ProfileList::loadProfiles()
@@ -78,6 +88,8 @@ void ProfileList::addProfile(Profile *profile)
     QLabel *recordLabel = new QLabel(QString("Record: %1").arg(recordEasy));
     layout->addWidget(recordLabel);
 
+
+
     // Définir le layout comme widget de l'item
     item->setSizeHint(QSize(100, 100)); // Définir la taille de l'élément
     profileListView->setItemWidget(item, widget);
@@ -97,20 +109,26 @@ void ProfileList::deleteSelectedProfile()
     }
 }
 
-Profile* ProfileList::getSelectedProfile() const
+Profile* ProfileList::getSelectedProfile()
 {
     int selectedIndex = profileListView->currentRow();
     if (selectedIndex >= 0 && selectedIndex < profiles.size()) {
+        profileManager->profileSelected = true;
+        updatePlayButtonState();
         return profiles.at(selectedIndex);
     }
+    profileManager->profileSelected = false;
+    updatePlayButtonState();
     return nullptr;
 }
 
 void ProfileList::handleProfileItemClicked()
 {
+    qDebug() << "Profile item clicked";
     Profile *selectedProfile = getSelectedProfile();
     if (selectedProfile) {
         emit profileSelected(selectedProfile);
+        profileManager->curentProfile = selectedProfile;
     }
 }
 
@@ -142,6 +160,32 @@ void ProfileList::handleAddProfileClicked()
 void ProfileList::handleDeleteProfileClicked()
 {
     
-    profileManager->removeProfile(getSelectedProfile()); // Supprime le profil du ProfileManager
+    profileManager->removeProfile(getSelectedProfile());
     deleteSelectedProfile();
+}
+
+void ProfileList::handlePlayButtonClicked()
+{
+    qDebug() << "Play button clicked";
+    if (profileManager->profileSelected)
+    {
+        // Lancer le jeu avec le profil sélectionné
+        
+        qDebug() << "Selected profile: " << profileManager->curentProfile->getName();
+        emit playClicked();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "No profile selected.");
+    }
+}
+
+
+void ProfileList::updatePlayButtonState()
+{
+    if (profileManager->profileSelected) {
+        playButton->setEnabled(true);
+    } else {
+        playButton->setEnabled(false);
+    }
 }

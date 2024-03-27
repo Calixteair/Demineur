@@ -19,6 +19,7 @@ public:
 
 signals:
     void profileSelected(Profile *profile);
+    void playClicked();
 
 
 private slots:
@@ -26,13 +27,16 @@ private slots:
     void handleAddProfileClicked();
     void handleDeleteProfileClicked();
     void addProfile(Profile *profile);
+    void handlePlayButtonClicked();
     void deleteSelectedProfile();
-    Profile* getSelectedProfile() const;
+    void updatePlayButtonState();
+    Profile* getSelectedProfile();
 
 private:
     QListWidget *profileListView;
     QPushButton *addButton;
     QPushButton *deleteButton;
+    QPushButton *playButton;
     QLabel *avatarLabel;
     ProfileManager* profileManager;
     QList<Profile*> profiles;

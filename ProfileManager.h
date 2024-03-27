@@ -12,7 +12,9 @@
 class ProfileManager
 {
 public:
+    Profile *curentProfile;
     ProfileManager();
+    bool profileSelected;
 
     QList<Profile*> getProfiles();
     void addProfile(Profile* profile);

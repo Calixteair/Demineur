@@ -131,6 +131,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connexion des signaux et des slots
     QObject::connect(mainMenu, &MainMenu::playClicked, this, &MainWindow::openDifficultyWindow);
+    QObject::connect(profileList, &ProfileList::playClicked, this, &MainWindow::openDifficultyWindow);
     QObject::connect(mainMenu, &MainMenu::profileClicked, this, &MainWindow::openProfileWindow);
     QObject::connect(mainMenu, &MainMenu::leaderboardClicked, this, &MainWindow::openLeaderboardWindow);
 
