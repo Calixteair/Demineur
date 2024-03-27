@@ -62,6 +62,7 @@ DemineurView::DemineurView(QString filePath, QWidget *parent) :
     if (rows * 50 > 1080 || cols * 50 > 1920) {
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
     }
    
 
@@ -133,7 +134,10 @@ DemineurView::DemineurView(int rows, int cols, int mines, QWidget *parent) :
 
 
 
+
     // Désactiver le redimensionnement automatique de la fenêtre principale
+
+
 
     createGrid(rows, cols);
 
@@ -281,7 +285,7 @@ void DemineurView::updateButton(int x, int y) {
         button->setText(QString::number(cellValue));
         button->setIcon(QIcon()); // Efface l'icône
     } else if ( cellState == 1 && cellValue == -1) {
-        QIcon icon("img/mine2.png");
+        QIcon icon(":/img/mine2.png");
         QSize buttonSize = button->size(); // Taille du bouton
         QSize iconSize(buttonSize.width() * 0.8, buttonSize.height() * 0.8); // Taille de l'icône (80% de la taille du bouton)
         button->setIconSize(iconSize); // Définition de la taille de l'icône
@@ -289,7 +293,7 @@ void DemineurView::updateButton(int x, int y) {
 
     }
     else if(cellState == 2) {
-        QIcon icon("img/marker.png");
+        QIcon icon(":/img/marker.png");
         QSize buttonSize = button->size(); // Taille du bouton
         QSize iconSize(buttonSize.width() * 0.8, buttonSize.height() * 0.8); // Taille de l'icône (80% de la taille du bouton)
         button->setIconSize(iconSize); // Définition de la taille de l'icône

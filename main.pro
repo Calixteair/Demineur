@@ -21,6 +21,7 @@ HEADERS += \
     MainWindow.h
 RESOURCES += resources.qrc
 
+
 HEADERS += \
     MainWindow.h \
     DifficultyWindow.h \    
