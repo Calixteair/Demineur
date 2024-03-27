@@ -46,15 +46,6 @@ QString Profile::getAvatarPath() const
     return m_avatar;
 }
 
-
-int Profile::getRecord(int mode) const
-{
-    if (mode >= 0 && mode < 3) {
-        return m_records[mode];
-    }
-    return -1; // Invalid mode
-}
-
 void Profile::setName(const QString &name)
 {
     m_name = name;
@@ -65,6 +56,11 @@ void Profile::setAvatar(const QString &avatar)
     m_avatar = avatar;
 }
 
+QString Profile::getAvatarPath()
+{
+    return m_avatar;
+}
+
 void Profile::setRecord(int mode, int time)
 {
     if (mode >= 0 && mode < 3) {
@@ -72,9 +68,15 @@ void Profile::setRecord(int mode, int time)
     }
 }
 
+
 void Profile::setEasyRecord(int time)
 {
     m_records[0] = time;
+}
+
+int Profile::getEasyRecord()
+{
+   return m_records[0];
 }
 
 void Profile::setMediumRecord(int time)
@@ -82,9 +84,19 @@ void Profile::setMediumRecord(int time)
     m_records[1] = time;
 }
 
+int Profile::getMediumRecord()
+{
+    return m_records[1];
+}
+
 void Profile::setHardRecord(int time)
 {
     m_records[2] = time;
+}
+
+int Profile::getHardRecord()
+{
+    return m_records[2];
 }
 
 void Profile::setCustomRecord(int time)

@@ -27,6 +27,10 @@ public:
     void setPartiesPerdu(int nb);
     void setAvatarPath(QString path);
     void setCustomRecord(int time);
+    int getEasyRecord();
+    int getMediumRecord();
+    int getHardRecord();
+    QString getAvatarPath();
 
 
 

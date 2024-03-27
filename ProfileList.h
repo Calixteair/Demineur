@@ -5,6 +5,7 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QList>
+#include <QLabel>
 #include "Profile.h"
 #include "ProfileManager.h" // Inclure le ProfileManager
 
@@ -32,6 +33,7 @@ private:
     QListWidget *profileListView;
     QPushButton *addButton;
     QPushButton *deleteButton;
+    QLabel *avatarLabel;
     ProfileManager* profileManager;
     QList<Profile*> profiles;
 };

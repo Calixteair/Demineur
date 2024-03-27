@@ -35,8 +35,22 @@ void ProfileManager::addProfile(Profile* profile)
 
 void ProfileManager::removeProfile(Profile* profile)
 {
-    profiles.removeOne(profile);
-    delete profile; // Assurez-vous de libérer la mémoire du profil supprimé
+    
+    
+    QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+    QString profilePath = profilesPath + "/" + profile->getName();
+
+    if (QDir(profilePath).exists())
+    {
+        QDir(profilePath).removeRecursively();
+        profiles.removeOne(profile);
+        qDebug() << "Profile deleted successfully";
+    }
+    else
+    {
+        qDebug() << "Profile does not exist";
+    }
+
 }
 
 void ProfileManager::saveProfiles(Profile* profile)
@@ -138,7 +152,7 @@ QList<Profile*> ProfileManager::loadAllProfiles()
             }
 
             QJsonObject profileJson = doc.object();
-            
+
             profile = new Profile();
             profile->setName(profileJson["name"].toString());
 
