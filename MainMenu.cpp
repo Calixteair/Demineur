@@ -6,6 +6,9 @@
 #include <QDebug>
 #include <QLabel>
 #include <QPixmap>
+#include <QWidget>
+#include <QPixmap>
+#include <QUrl>
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 {
@@ -13,7 +16,7 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 
     // image de du logo
     QLabel *logo = new QLabel;
-    QPixmap logoPixmap("img/mine.png");
+    QPixmap logoPixmap(":/img/mine.png");
     logo->setPixmap(logoPixmap);
     layout->addWidget(logo);
 

@@ -35,7 +35,7 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
         launchDemineurView(16, 16, 40);
     });
     connect(expertButton, &QPushButton::clicked, this, [=]() {
-        launchDemineurView(30, 16, 99);
+        launchDemineurView(16, 30, 99);
     });
     connect(customButton, &QPushButton::clicked, this, &DifficultyWindow::showCustomDialog);
 
