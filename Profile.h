@@ -8,6 +8,7 @@ class Profile
 {
 public:
     Profile(const QString &name, const QString &avatar);
+    Profile();
     ~Profile();
 
     QString getName() const;
@@ -17,14 +18,27 @@ public:
     void setName(const QString &name);
     void setAvatar(const QString &avatar);
     void setRecord(int mode, int time);
+    void setEasyRecord(int time);
+    void setMediumRecord(int time);
+    void setHardRecord(int time);
+    void setUuid(const QString &uuid);
+    void setPartiesJouer(int nb);
+    void setPartiesGagner(int nb);
+    void setPartiesPerdu(int nb);
+    void setAvatarPath(QString path);
+    void setCustomRecord(int time);
 
-    bool saveProfile(const QString &filePath) const;
-    static Profile* loadProfile(const QString &filePath);
+
 
 private:
+    QString m_uuid;
     QString m_name;
     QString m_avatar;
     int m_records[3]; // Store records for each mode
+    int m_partiesJouer;
+    int m_partiesGagner;
+    int m_partiesPerdu;
+
 
     
 };

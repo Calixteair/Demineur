@@ -9,6 +9,27 @@ Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_a
     for (int i = 0; i < 3; ++i) {
         m_records[i] = 0;
     }
+
+    // If avatar is empty, set it to default
+    if (m_avatar.isEmpty()) {
+        m_avatar = "";
+    }
+
+    // If name is empty, set it to "Unknown"
+    if (m_name.isEmpty()) {
+        m_name = "Unknown";
+    }
+
+
+
+}
+
+Profile::Profile() : m_name(""), m_avatar("")
+{
+    // Initialize records to 0
+    for (int i = 0; i < 3; ++i) {
+        m_records[i] = 0;
+    }
 }
 
 Profile::~Profile()
@@ -51,41 +72,50 @@ void Profile::setRecord(int mode, int time)
     }
 }
 
-bool Profile::saveProfile(const QString &filePath) const
+void Profile::setEasyRecord(int time)
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << "Failed to open file for writing";
-        return false;
-    }
-
-    QDataStream out(&file);
-    out << m_name << m_avatar << m_records[0] << m_records[1] << m_records[2];
-
-    file.close();
-    return true;
+    m_records[0] = time;
 }
 
-Profile* Profile::loadProfile(const QString &filePath)
+void Profile::setMediumRecord(int time)
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Failed to open file for reading";
-        return nullptr;
-    }
-
-    QDataStream in(&file);
-    QString name;
-    QString avatar;
-    int records[3];
-    in >> name >> avatar >> records[0] >> records[1] >> records[2];
-
-    file.close();
-
-    Profile *profile = new Profile(name, avatar);
-    for (int i = 0; i < 3; ++i) {
-        profile->setRecord(i, records[i]);
-    }
-
-    return profile;
+    m_records[1] = time;
 }
+
+void Profile::setHardRecord(int time)
+{
+    m_records[2] = time;
+}
+
+void Profile::setCustomRecord(int time)
+{
+    m_records[3] = time;
+}
+
+
+void Profile::setUuid(const QString &uuid)
+{
+    m_uuid = uuid;
+}
+
+void Profile::setPartiesJouer(int partiesJouer)
+{
+    m_partiesJouer = partiesJouer;
+}
+
+void Profile::setPartiesGagner(int partiesGagner)
+{
+    m_partiesGagner = partiesGagner;
+}
+
+void Profile::setPartiesPerdu(int partiesPerdu)
+{
+    m_partiesPerdu = partiesPerdu;
+}
+
+void Profile::setAvatarPath(QString avatarPath)
+{
+    m_avatar = avatarPath;
+}
+
+

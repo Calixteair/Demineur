@@ -12,15 +12,19 @@
 #include <QDate>
 #include <QStandardPaths>
 #include <QDir>
+//uuid
+#include <QUuid>
 
 ProfileManager::ProfileManager()
+
+    
 {
-    // Charger les profils à partir du fichier lors de la création du gestionnaire de profils
-    loadProfiles("profiles.dat");
+    profiles = QList<Profile*>();
 }
 
-QList<Profile*> ProfileManager::getProfiles() const
+QList<Profile*> ProfileManager::getProfiles()
 {
+    profiles = loadAllProfiles();
     return profiles;
 }
 
@@ -72,16 +76,25 @@ void ProfileManager::saveProfiles(Profile* profile)
             if (file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
                 /// {name: "name", records: {easy: 0, medium: 0, hard: 0, custom: 0}, dateCreated: "date}
+                
                 QJsonObject profileJson;
                 profileJson["name"] = profile->getName();
 
                 QJsonObject recordsJson;
+                QJsonObject uuidJson;
+
+                uuidJson["uuid"] = QUuid::createUuid().toString();
                 recordsJson["easy"] = 0;
                 recordsJson["medium"] = 0;
                 recordsJson["hard"] = 0;
                 recordsJson["custom"] = 0;
                 profileJson["records"] = recordsJson;
-
+                QJsonObject partiesJouerJson;
+                QJsonObject partiesGagnerJson;
+                QJsonObject partiesPerduJson;
+                partiesJouerJson["partiesJouer"] = 0;
+                partiesGagnerJson["partiesGagner"] = 0;
+                partiesPerduJson["partiesPerdu"] = 0;
                 profileJson["dateCreated"] = QDate::currentDate().toString("yyyy-MM-dd");
 
                 QJsonDocument doc(profileJson);
@@ -99,32 +112,61 @@ void ProfileManager::saveProfiles(Profile* profile)
 
     
 }
-
-void ProfileManager::loadProfiles(const QString& filePath)
+QList<Profile*> ProfileManager::loadAllProfiles()
 {
-    QFile file(filePath);
-    qDebug() << "Loading profiles from file: " << filePath;
+    QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
 
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    QList<Profile*> profilesList;
+
+    QDir profilesDir(profilesPath);
+    QStringList profileFolders = profilesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    for (const QString &profileFolder : profileFolders)
     {
-        qDebug() << "File opened successfully";
-        QTextStream in(&file);
-        while (!in.atEnd())
+        QString profilePath = profilesPath + "/" + profileFolder;
+        QFile file(profilePath + "/profiles.json");
+
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-            QString line = in.readLine();
-            QStringList parts = line.split(",");
-            if (parts.size() == 2)
+            QJsonParseError jsonError;
+            QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &jsonError);
+
+            if (jsonError.error != QJsonParseError::NoError)
             {
-                QString name = parts[0];
-                QString avatarPath = parts[1];
-                Profile* profile = new Profile(name, avatarPath);
-                addProfile(profile);
+                qWarning() << "Erreur lors de l'analyse du fichier JSON : " << jsonError.errorString();
+                continue;
             }
+
+            QJsonObject profileJson = doc.object();
+            
+            profile = new Profile();
+            profile->setName(profileJson["name"].toString());
+
+            QJsonObject recordsJson = profileJson["records"].toObject();
+            profile->setEasyRecord(recordsJson["easy"].toInt());
+            profile->setMediumRecord(recordsJson["medium"].toInt());
+            profile->setHardRecord(recordsJson["hard"].toInt());
+            profile->setCustomRecord(recordsJson["custom"].toInt());
+
+            profile->setUuid(profileJson["uuid"].toString());
+
+            profile->setPartiesJouer(profileJson["partiesJouer"].toInt());
+            profile->setPartiesGagner(profileJson["partiesGagner"].toInt());
+            profile->setPartiesPerdu(profileJson["partiesPerdu"].toInt());
+
+            QString avatarPath = profilePath + "/avatar_" + profileFolder + ".png";
+            profile->setAvatarPath(avatarPath);
+
+
+            profilesList.append(profile);
+
+            file.close();
         }
-        file.close();
+        else
+        {
+            qWarning() << "Impossible d'ouvrir le fichier pour charger les profils : " << "profiles.dat";
+        }
     }
-    else
-    {
-        qWarning() << "Impossible d'ouvrir le fichier pour chargement des profils : " << filePath;
-    }
+
+    return profilesList;
 }
