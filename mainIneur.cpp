@@ -78,4 +78,4 @@ int main() {
     return 0;
 }
 
-// compiler g++ mainIneur.cpp Demineur.cpp -o demineur
+// compiler g++ mainIneur.cpp emineur.cpp -o demineur

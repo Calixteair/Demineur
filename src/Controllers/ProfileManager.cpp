@@ -331,3 +331,90 @@ QList<Profile*> ProfileManager::loadAllProfiles()
 
     return profilesList;
 }
+
+    void ProfileManager::addGame(int col, int row, int mines, bool win){
+
+
+        if (profileSelected)
+        {
+            if (win)
+            {
+                curentProfile->setPartiesGagner(curentProfile->getPartiesGagner() + 1);
+            }
+            else
+            {
+                curentProfile->setPartiesPerdu(curentProfile->getPartiesPerdu() + 1);
+            }
+            curentProfile->setPartiesJouer(curentProfile->getPartiesJouer() + 1);
+
+            // if (col == 8 && row == 8 && mines == 10)
+            // {
+            //     if (win)
+            //     {
+            //         curentProfile->setEasyRecord(curentProfile->getEasyRecord() + 1);
+            //     }
+            // }
+            // else if (col == 16 && row == 16 && mines == 40)
+            // {
+            //     if (win)
+            //     {
+            //         curentProfile->setMediumRecord(curentProfile->getMediumRecord() + 1);
+            //     }
+            // }
+            // else if (col == 16 && row == 30 && mines == 99)
+            // {
+            //     if (win)
+            //     {
+            //         curentProfile->setHardRecord(curentProfile->getHardRecord() + 1);
+            //     }
+            // }
+            // else
+            // {
+            //     if (win)
+            //     {
+            //         curentProfile->setCustomRecord(curentProfile->getCustomRecord() + 1);
+            //     }
+            // }
+
+            refreshProfileinFile(curentProfile);
+        }
+
+    }
+
+
+        void ProfileManager::refreshProfileinFile(Profile* profile){
+
+            QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+            QString profilePath = profilesPath + "/" + profile->getName();
+
+            QFile file(profilePath + "/profiles.json");
+
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                QJsonObject profileJson;
+                profileJson["name"] = profile->getName();
+
+                QJsonObject recordsJson;
+                recordsJson["easy"] = profile->getEasyRecord();
+                recordsJson["medium"] = profile->getMediumRecord();
+                recordsJson["hard"] = profile->getHardRecord();
+                recordsJson["custom"] = profile->getCustomRecord();
+                profileJson["records"] = recordsJson;
+
+                profileJson["uuid"] = profile->getUuid();
+
+                profileJson["partiesJouer"] = profile->getPartiesJouer();
+                profileJson["partiesGagner"] = profile->getPartiesGagner();
+                profileJson["partiesPerdu"] = profile->getPartiesPerdu();
+
+                profileJson["dateCreated"] = QDate::currentDate().toString("yyyy-MM-dd");
+
+                QJsonDocument doc(profileJson);
+                file.write(doc.toJson());
+            }
+            else
+            {
+                qWarning() << "Impossible d'ouvrir le fichier pour sauvegarde des profils : " << "profiles.dat";
+            }
+        }
+

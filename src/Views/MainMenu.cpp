@@ -1,6 +1,6 @@
 // MainMenu.cpp
-#include "MainMenu.h"
-#include "ProfileList.h"
+#include "../headerFiles/Views/MainMenu.h"
+#include "../headerFiles/Views/ProfileList.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QDebug>

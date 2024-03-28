@@ -9,6 +9,7 @@
 #include <QWidgetAction>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+#include <QTime>
 
 class QStackedWidget;
 class DifficultyWindow;
@@ -30,6 +31,7 @@ private slots:
     void openProfileWindow();
     void openLeaderboardWindow();
     void openMainWindow();
+    void endGame(int rows , int cols, int mines, QTime time, bool wind);
     private slots:
     void toggleMute();
     void setVolume(int volume);

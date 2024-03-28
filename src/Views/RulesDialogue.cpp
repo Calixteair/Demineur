@@ -1,4 +1,4 @@
-#include "RulesDialogue.h"
+#include "../headerFiles/Views/RulesDialogue.h"
 
 #include <QVBoxLayout>
 #include <QTextBrowser>

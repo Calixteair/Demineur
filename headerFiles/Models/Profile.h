@@ -26,6 +26,9 @@ public:
     void setPartiesGagner(int nb);
     void setPartiesPerdu(int nb);
     void setAvatarPath(QString path);
+    int getPartiesJouer();
+    int getPartiesGagner();
+    int getPartiesPerdu();
     QString getAvatarPath();
     QString getUuid();
 

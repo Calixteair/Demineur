@@ -107,4 +107,24 @@ void Profile::setAvatarPath(QString avatarPath)
     m_avatar = avatarPath;
 }
 
+int Profile::getPartiesJouer()
+{
+    return m_partiesJouer;
+}
 
+
+int Profile::getPartiesGagner()
+{
+    return m_partiesGagner;
+}
+
+
+int Profile::getPartiesPerdu()
+{
+    return m_partiesPerdu;
+} 
+
+int Profile::getCustomRecord()
+{
+    return m_records[3];
+}

@@ -1,6 +1,6 @@
 // DifficultyWindow.cpp
 
-#include "DifficultyWindow.h"
+#include "../headerFiles/Views/DifficultyWindow.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -38,6 +38,8 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
         launchDemineurView(16, 30, 99);
     });
     connect(customButton, &QPushButton::clicked, this, &DifficultyWindow::showCustomDialog);
+
+
 
 
     connect (loadGameButton, &QPushButton::clicked, this, [=]() {
@@ -162,5 +164,7 @@ bool DifficultyWindow::validateInput(QLineEdit *rowsLineEdit, QLineEdit *colsLin
 
     return true;
 }
+
+
 
 
