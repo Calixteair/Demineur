@@ -3,14 +3,16 @@
 #include <QDataStream>
 #include <QDebug>
 #include <QTime>
+#include <iostream>
 
 Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_avatar(avatar)
 {
 
     // Initialize records to 0
-    for (int i = 0; i < 4; ++i) {
-            m_records[i] = QTime(0, 0, 0); // 00:00:00
-    }
+    // for (int i = 0; i < 4; ++i) {
+    
+    //         m_records[i] =  
+    // }
 
     // If avatar is empty, set it to default
     if (m_avatar.isEmpty()) {
@@ -22,6 +24,11 @@ Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_a
         m_name = "Unknown";
     }
 
+    m_partiesJouer = 0;
+    m_partiesGagner = 0;
+    m_partiesPerdu = 0;
+
+
 
 
 }
@@ -30,7 +37,7 @@ Profile::Profile() : m_name(""), m_avatar("")
 {
     // Initialize records to 0
     for (int i = 0; i < 3; ++i) {
-            m_records[i] = QTime(0, 0, 0); // 00:00:00
+            m_records[i] = QTime(0, 0, -1); // 
     }
 }
 
@@ -64,17 +71,37 @@ QString Profile::getAvatarPath()
 }
 
 void Profile::setRecord(int index, QTime time) {
-    if (index >= 0 && index < 3) {
+    if (index >= 0 && index <= 3) {
+
+        std::cout << "setRecord" << time.toString().toStdString() << std::endl;
+
         m_records[index] = time;
     }
 }
 
 QTime Profile::getRecord(int index) {
-    if (index >= 0 && index < 3) {
+    if (index >= 0 && index <= 3) {
         return m_records[index];
     } else {
-        return QTime(0, 0, 0); // Retourner 00:00:00 si l'index est invalide
+        return QTime(99, 59, 59);
     }
+}
+
+
+
+QTime Profile::getRecord(int row, int col, int mines){
+    if(row == 8 && col == 8 && mines == 10){
+        return m_records[0];
+    }
+    if(row == 16 && col == 16 && mines == 40){
+        return m_records[1];
+    }
+
+    if(row == 16 && col == 30 && mines == 99){
+        return m_records[2];
+    }
+
+    return m_records[3];
 }
 
 

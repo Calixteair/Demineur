@@ -25,8 +25,9 @@ public:
     void changeName(Profile* profile, QString newName);
     void changeAvatar(Profile* profile, QString newAvatarPath);
     void updaterecord(Profile* profile, QTime time , int record);
-    void addGame(int col, int row, int mines, bool win);
+    void addGame(int col, int row, int mines, QTime time , bool win);
     void refreshProfileinFile(Profile* profile);
+    bool getProfileSelected();
 
 private:
     QList<Profile*> profiles;
