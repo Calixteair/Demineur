@@ -333,7 +333,6 @@ QList<Profile *> ProfileManager::loadAllProfiles()
 
 void ProfileManager::addGame(int col, int row, int mines, QTime time, bool win)
 {
-    std::cout << curentProfile->getPartiesJouer() << " " << curentProfile->getPartiesGagner() << " " << curentProfile->getPartiesPerdu() << std::endl;
 
     if (profileSelected)
     {

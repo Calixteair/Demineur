@@ -290,9 +290,9 @@ void MainWindow::setVolume(int volume)
 
 void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
 
+    qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
 
     profileManager->addGame(rows, cols, mines,time, win);
-    qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
     
 
 
