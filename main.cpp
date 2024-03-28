@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "MainWindow.h"
+#include "headerFiles/Views/MainWindow.h"
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
