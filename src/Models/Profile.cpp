@@ -123,8 +123,3 @@ int Profile::getPartiesPerdu()
 {
     return m_partiesPerdu;
 } 
-
-int Profile::getCustomRecord()
-{
-    return m_records[3];
-}

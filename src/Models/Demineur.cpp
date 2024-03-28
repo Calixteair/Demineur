@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
-#include "Demineur.h"
+#include "headerFiles/Models/Demineur.h"
 
 using namespace std;
 

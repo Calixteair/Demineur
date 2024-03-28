@@ -395,10 +395,11 @@ QList<Profile*> ProfileManager::loadAllProfiles()
                 profileJson["name"] = profile->getName();
 
                 QJsonObject recordsJson;
-                recordsJson["easy"] = profile->getEasyRecord();
-                recordsJson["medium"] = profile->getMediumRecord();
-                recordsJson["hard"] = profile->getHardRecord();
-                recordsJson["custom"] = profile->getCustomRecord();
+                recordsJson["easy"] = profile->getRecord(1).toString("hh:mm:ss");
+                recordsJson["medium"] = profile->getRecord(2).toString("hh:mm:ss");
+                recordsJson["hard"] = profile->getRecord(3).toString("hh:mm:ss");
+                recordsJson["custom"] = profile->getRecord(4).toString("hh:mm:ss");
+
                 profileJson["records"] = recordsJson;
 
                 profileJson["uuid"] = profile->getUuid();
