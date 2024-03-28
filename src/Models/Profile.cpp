@@ -1,13 +1,15 @@
-#include "Profile.h"
+#include "headerFiles/Models/Profile.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
+#include <QTime>
 
 Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_avatar(avatar)
 {
+
     // Initialize records to 0
     for (int i = 0; i < 3; ++i) {
-        m_records[i] = 0;
+            m_records[i] = QTime(0, 0, 0); // 00:00:00
     }
 
     // If avatar is empty, set it to default
@@ -28,7 +30,7 @@ Profile::Profile() : m_name(""), m_avatar("")
 {
     // Initialize records to 0
     for (int i = 0; i < 3; ++i) {
-        m_records[i] = 0;
+            m_records[i] = QTime(0, 0, 0); // 00:00:00
     }
 }
 
@@ -61,47 +63,18 @@ QString Profile::getAvatarPath()
     return m_avatar;
 }
 
-void Profile::setRecord(int mode, int time)
-{
-    if (mode >= 0 && mode < 3) {
-        m_records[mode] = time;
+void Profile::setRecord(int index, QTime time) {
+    if (index >= 0 && index < 3) {
+        m_records[index] = time;
     }
 }
 
-
-void Profile::setEasyRecord(int time)
-{
-    m_records[0] = time;
-}
-
-int Profile::getEasyRecord()
-{
-   return m_records[0];
-}
-
-void Profile::setMediumRecord(int time)
-{
-    m_records[1] = time;
-}
-
-int Profile::getMediumRecord()
-{
-    return m_records[1];
-}
-
-void Profile::setHardRecord(int time)
-{
-    m_records[2] = time;
-}
-
-int Profile::getHardRecord()
-{
-    return m_records[2];
-}
-
-void Profile::setCustomRecord(int time)
-{
-    m_records[3] = time;
+QTime Profile::getRecord(int index) {
+    if (index >= 0 && index < 3) {
+        return m_records[index];
+    } else {
+        return QTime(0, 0, 0); // Retourner 00:00:00 si l'index est invalide
+    }
 }
 
 

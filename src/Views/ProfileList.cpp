@@ -20,6 +20,41 @@
 
 ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWidget(parent), profileManager(profileManager)
 {
+    QString buttonStylePlay = "QPushButton {"
+                        "background-color: #2ECC71;" // vert
+                        "border: 1px solid #2ECC71;"
+                        "border-radius: 5px;"
+                        "color: white;" // Couleur du texte blanc
+                        "padding: 5px 10px;"
+                        "}"
+                        "QPushButton:hover {"
+                        "background-color: #27AE60;" 
+                        "}"
+                        "QPushButton:disabled {" 
+                        "background-color: #dcdcdc;" // Gris clair
+                        "border-color: #dcdcdc;" // Gris clair
+                        "color: #a0a0a0;" // Couleur du texte grise
+                        "}";
+
+    QString buttonStyle = "QPushButton {"
+                        "background-color: #f0f0f0;"
+                        "border-style: solid;"
+                        "border-width: 2px;" 
+                        "border-color: #c0c0c0;" 
+                        "border-radius: 5px;" 
+                        "padding: 5px 10px;"
+                        "}"
+                        //hover
+                        "QPushButton:hover {"
+                        "background-color: #e0e0e0;" 
+                        "border-color: #a0a0a0;" 
+                        "}"
+                        "QPushButton:disabled {" 
+                        "background-color: #dcdcdc;" // Gris clair
+                        "border-color: #dcdcdc;" // Gris clair
+                        "color: #a0a0a0;" 
+                        "}"; 
+
     QVBoxLayout *layout = new QVBoxLayout(this);
     dialog = new ModifyProfileDialog(this);
 
@@ -27,26 +62,34 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
     connect(profileListView, &QListWidget::itemClicked, this, &ProfileList::handleProfileItemClicked);
     layout->addWidget(profileListView);
 
+    QHBoxLayout *bottomLeftLayout = new QHBoxLayout;
     addButton = new QPushButton("Add Profile", this);
-    connect(addButton, &QPushButton::clicked, this, &ProfileList::handleAddProfileClicked);
-    layout->addWidget(addButton);
-
     deleteButton = new QPushButton("Delete Profile", this);
-    connect(deleteButton, &QPushButton::clicked, this, &ProfileList::handleDeleteProfileClicked);
-    layout->addWidget(deleteButton);
-    profiles = profileManager->getProfiles();
-
+    
+    QHBoxLayout *bottomRightLayout = new QHBoxLayout;
     playButton = new QPushButton("Jouer", this);
-    layout->addWidget(playButton);
-    QObject::connect(playButton, &QPushButton::clicked, this, &ProfileList::handlePlayButtonClicked);
-
     modifyProfileButton = new QPushButton("Modifier le profil", this);
-    layout->addWidget(modifyProfileButton);
-    QObject::connect(modifyProfileButton, &QPushButton::clicked, this, &ProfileList::handleModifyProfileButtonClicked);
+ 
+    playButton->setStyleSheet(buttonStylePlay);
+    deleteButton->setStyleSheet(buttonStyle);
+    addButton->setStyleSheet(buttonStyle);
+    modifyProfileButton->setStyleSheet(buttonStyle);
 
+    bottomLeftLayout->addWidget(addButton);
+    bottomLeftLayout->addWidget(deleteButton);
+    bottomRightLayout->addWidget(modifyProfileButton);
+    bottomRightLayout->addWidget(playButton);
+
+    layout->addLayout(bottomLeftLayout);
+    layout->addLayout(bottomRightLayout);
+
+    connect(deleteButton, &QPushButton::clicked, this, &ProfileList::handleDeleteProfileClicked);
+    connect(addButton, &QPushButton::clicked, this, &ProfileList::handleAddProfileClicked);
+    QObject::connect(playButton, &QPushButton::clicked, this, &ProfileList::handlePlayButtonClicked);
+    QObject::connect(modifyProfileButton, &QPushButton::clicked, this, &ProfileList::handleModifyProfileButtonClicked);
     QObject::connect(dialog, &ModifyProfileDialog::profileModified, this, &ProfileList::modifyProfile);
 
-    
+    profiles = profileManager->getProfiles();    
     updatePlayButtonState();
     loadProfiles(); // Charge les profils existants
 
@@ -72,7 +115,6 @@ void ProfileList::addProfile(Profile *profile)
 
     qDebug() << profile->getName();
     qDebug() << profile->getAvatarPath();
-    qDebug() << profile->getEasyRecord();
 
     // Créer une nouvelle QListWidgetItem
     QListWidgetItem *item = new QListWidgetItem(profileListView);
@@ -97,8 +139,8 @@ void ProfileList::addProfile(Profile *profile)
     layout->addWidget(nameLabel);
 
     // Créer un QLabel pour afficher le record
-    int recordEasy = profile->getEasyRecord();
-    QLabel *recordLabel = new QLabel(QString("Record: %1").arg(recordEasy));
+    QTime recordEasy = profile->getRecord(1);
+    QLabel *recordLabel = new QLabel(QString("Record: %1").arg(recordEasy.toString("hh:mm:ss")));
     layout->addWidget(recordLabel);
 
 

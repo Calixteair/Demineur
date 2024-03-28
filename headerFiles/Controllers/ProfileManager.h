@@ -7,6 +7,7 @@
 #include <QJsonDocument>
 #include <QFile>
 #include <QTextStream>
+#include <QTime>
 
 
 class ProfileManager
@@ -23,6 +24,7 @@ public:
     QList<Profile*> loadAllProfiles();
     void changeName(Profile* profile, QString newName);
     void changeAvatar(Profile* profile, QString newAvatarPath);
+    void updaterecord(Profile* profile, QTime time , int record);
 
 private:
     QList<Profile*> profiles;

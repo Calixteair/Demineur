@@ -3,6 +3,9 @@
 
 #include <QString>
 #include <QPixmap>
+#include <QTime>
+#include <QMetaType>
+#include <QTime>
 
 class Profile
 {
@@ -13,23 +16,16 @@ public:
 
     QString getName() const;
     QString getAvatarPath() const;
-    int getRecord(int mode) const; // mode 0: mode1, mode 1: mode2, mode 2: mode3
+    QTime getRecord(int mode);
 
     void setName(const QString &name);
     void setAvatar(const QString &avatar);
-    void setRecord(int mode, int time);
-    void setEasyRecord(int time);
-    void setMediumRecord(int time);
-    void setHardRecord(int time);
+    void setRecord(int mode, QTime time);
     void setUuid(const QString &uuid);
     void setPartiesJouer(int nb);
     void setPartiesGagner(int nb);
     void setPartiesPerdu(int nb);
     void setAvatarPath(QString path);
-    void setCustomRecord(int time);
-    int getEasyRecord();
-    int getMediumRecord();
-    int getHardRecord();
     QString getAvatarPath();
     QString getUuid();
 
@@ -39,7 +35,7 @@ private:
     QString m_uuid;
     QString m_name;
     QString m_avatar;
-    int m_records[3]; // Store records for each mode
+    QTime m_records[4];
     int m_partiesJouer;
     int m_partiesGagner;
     int m_partiesPerdu;
