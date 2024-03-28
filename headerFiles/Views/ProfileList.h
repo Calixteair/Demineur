@@ -35,7 +35,6 @@ private slots:
     void updatePlayButtonState();
     void handleModifyProfileButtonClicked();
     void modifyProfile(const QString &name, const QString &avatarPath);
-
     Profile* getSelectedProfile();
 
 private:

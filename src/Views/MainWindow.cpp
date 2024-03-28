@@ -4,6 +4,8 @@
 #include "../headerFiles/Views/ProfileList.h"
 #include "../headerFiles/Views/RulesDialogue.h"
 #include "../headerFiles/Views/MainMenu.h"
+#include "../headerFiles/Views/DemineurView.h"
+#include "../headerFiles/Views/LeaderboardView.h"
 #include <QStackedWidget>
 #include <QDebug>
 #include <QPushButton>
@@ -127,9 +129,11 @@ MainWindow::MainWindow(QWidget *parent)
     difficultyWindow = new DifficultyWindow;
     profileManager = new ProfileManager;
     profileList = new ProfileList(profileManager);
+    leaderboardView = new LeaderboardView(profileManager);
     stackedWidget->addWidget(mainMenu);
     stackedWidget->addWidget(difficultyWindow);
     stackedWidget->addWidget(profileList);
+    stackedWidget->addWidget(leaderboardView);
 
     setCentralWidget(stackedWidget);
 
@@ -163,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(profileList, &ProfileList::playClicked, this, &MainWindow::openDifficultyWindow);
     QObject::connect(mainMenu, &MainMenu::profileClicked, this, &MainWindow::openProfileWindow);
     QObject::connect(mainMenu, &MainMenu::leaderboardClicked, this, &MainWindow::openLeaderboardWindow);
+
 
     QObject::connect(difficultyWindow, &DifficultyWindow::demineurViewRequested, this, &MainWindow::openDemineurPageWithDifficulty);
     QObject::connect(difficultyWindow, &DifficultyWindow::demineurViewRequestedWithFile, this, &MainWindow::openDemineurPageWithFilePATH);
@@ -256,6 +261,7 @@ void MainWindow::openProfileWindow()
 void MainWindow::openLeaderboardWindow()
 {
     qDebug() << "Ouverture de la fenêtre de leaderboard";
+    stackedWidget->setCurrentWidget(leaderboardView);
     playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 }
 

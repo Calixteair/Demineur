@@ -17,6 +17,7 @@ class ProfileManager;
 class ProfileList;
 class MainMenu;
 class QMediaPlayer;
+class LeaderboardView;
 
 class MainWindow : public QMainWindow
 {
@@ -46,6 +47,7 @@ private:
     DifficultyWindow *difficultyWindow;
     ProfileManager *profileManager;
     ProfileList *profileList;
+    LeaderboardView *leaderboardView;
     MainMenu *mainMenu; 
     QMenu *settingsMenu;
     QAction *muteAction;
