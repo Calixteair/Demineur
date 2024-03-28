@@ -38,6 +38,7 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
 
     QString buttonStyle = "QPushButton {"
                         "background-color: #f0f0f0;"
+                        "color: black;"
                         "border-style: solid;"
                         "border-width: 2px;" 
                         "border-color: #c0c0c0;" 
