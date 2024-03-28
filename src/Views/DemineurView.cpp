@@ -66,6 +66,26 @@ void DemineurView::InitialiserView(int rows , int cols){
     timeElapsed = QTime(0, 0);
    
     QPushButton *saveButton = new QPushButton("Sauvegarder la partie", this);
+    saveButton->setMinimumWidth(200); // Définit une taille fixe pour le bouton
+    saveButton->setMinimumHeight(50); // Définit une taille fixe pour le bouton
+    saveButton->setMaximumWidth(300); // Définit une taille fixe pour le bouton
+    saveButton->setMaximumHeight(50); // Définit une taille fixe pour le bouton
+
+    saveButton->setStyleSheet("QPushButton {"
+                           "background-color: #4CAF50;"
+                           "padding: 10px 10px;"
+                           "border: none;"
+                           "color: white;"
+                           "text-align: center;"
+                           "text-decoration: none;"
+                           "font-size: 16px;"
+                           "margin: 4px 2px;"
+                           "border-radius: 8px;"
+                           "}"
+                           "QPushButton:hover {"
+                           "background-color: #45a049;"
+                           "color: white;"
+                           "}");
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
         QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder la partie", QDir::homePath(), "Fichiers de sauvegarde (*.sav)");
@@ -76,15 +96,27 @@ void DemineurView::InitialiserView(int rows , int cols){
 
       QVBoxLayout *layout = new QVBoxLayout(this);
 
+          layout->setAlignment(Qt::AlignCenter);
+
+
 
 
     timeLabel = new QLabel(this);
-
     timeLabel->setText("00:00:00");
-
+    timeLabel->setStyleSheet("QLabel {"
+                         "font-size: 24px;"
+                         "color: #333333;"
+                         "background-color: #f0f0f0;"
+                         "}");
+                         
     counterFlag = new QLabel(this);
+counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
+counterFlag->setStyleSheet("QLabel {"
+                           "font-size: 24px;"
+                           "color: #333333;"
+                            "background-color: #f0f0f0;"
+                           "}");
 
-    counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
 
     layout->addWidget(counterFlag);
 
@@ -108,6 +140,8 @@ void DemineurView::InitialiserView(int rows , int cols){
 
 
 
+
+
     //Verifier si la grille est plus grande que la taille de la fenêtre
     if (rows * 50 > 1080 || cols * 50 > 1920) {
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -124,11 +158,23 @@ void DemineurView::InitialiserView(int rows , int cols){
 
 
 
-    // Désactiver le redimensionnement automatique de la fenêtre principale
+    // redimensionner la fenetre en plein ecran
+
+    setWindowState(Qt::WindowFullScreen);
+
+    setLayout(layout);
+
+
+    
+
+
 
 
 
     createGrid(rows, cols);
+
+
+
 
 
 }

@@ -43,15 +43,24 @@ MainWindow::MainWindow(QWidget *parent)
     navbar->setStyleSheet("QWidget#navbar { background-color: rgb(50, 50, 50); }");
     QHBoxLayout *navbarLayout = new QHBoxLayout(navbar);
     QPushButton *homeButton = new QPushButton("Accueil", navbar);
-    //homeButton->setStyleSheet("QPushButton { color: white; }");
+    homeButton->setStyleSheet("QPushButton { background-color: transparent; border: none; color: white; }");
+
     QMenu *settingsMenu = new QMenu("Paramètres", navbar);
+    settingsMenu->setStyleSheet("QMenu { background-color: rgb(50, 50, 50); color: white; }");
+
     settingsMenu->adjustSize();
-    //settingsMenu->setStyleSheet("QPushButton { color: white; }");
     QPushButton *helpButton = new QPushButton("Aide", navbar);
-    //helpButton->setStyleSheet("QPushButton { color: white; }");
+    helpButton->setStyleSheet("QPushButton { background-color: transparent; border: none; color: white; }");
+
     navbarLayout->addWidget(homeButton);
     navbarLayout->addWidget(settingsMenu);
     navbarLayout->addWidget(helpButton);
+
+
+
+
+
+
 
     // Définir la navbar comme barre de menus
     setMenuWidget(navbar);
@@ -275,7 +284,7 @@ void MainWindow::setVolume(int volume)
 
 void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
 
-    
+
     profileManager->addGame(rows, cols, mines,time, win);
     qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
     
