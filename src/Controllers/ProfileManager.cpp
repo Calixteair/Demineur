@@ -1,8 +1,8 @@
-#include "ProfileManager.h"
+#include "headerFiles/Controllers/ProfileManager.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
-#include "Profile.h"
+#include "headerFiles/Models/Profile.h"
 #include <QList>
 #include <QString>
 #include <QImage>
@@ -54,6 +54,96 @@ void ProfileManager::removeProfile(Profile* profile)
     }
 
 }
+
+void ProfileManager::changeName(Profile* profile, QString newName)
+{
+    qDebug() << "Changing profile name";
+    
+    QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+    
+    QString profilePath = profilesPath + "/" + profile->getName();
+    
+    QString newProfilePath = profilesPath + "/" + newName;
+    QString oldAvatarPath = newProfilePath + "/avatar_" + profile->getName() + ".png";
+    QString newAvatarPath = newProfilePath + "/avatar_" + newName + ".png";
+    
+    if (QDir(profilePath).exists())
+    {
+        QDir().rename(profilePath, newProfilePath);
+        profile->setName(newName);
+
+        // update le json 
+        QFile file(newProfilePath + "/profiles.json");
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QJsonParseError jsonError;
+            QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &jsonError);
+
+            if (jsonError.error != QJsonParseError::NoError)
+            {
+                qWarning() << "Erreur lors de l'analyse du fichier JSON : " << jsonError.errorString();
+                return;
+            }
+
+            QJsonObject profileJson = doc.object();
+            profileJson["name"] = newName;
+
+            QJsonDocument newDoc(profileJson);
+            file.close();
+
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                file.write(newDoc.toJson());
+            }
+            else
+            {
+                qWarning() << "Impossible d'ouvrir le fichier pour sauvegarde des profils : " << "profiles.dat";
+            }
+            // changer le nom de l'avatar
+            qDebug() << "changement du nom de l'avatar";
+            qDebug() << oldAvatarPath;
+            qDebug() << newAvatarPath;
+            QFile::rename(oldAvatarPath, newAvatarPath);
+        }
+        else
+        {
+            qWarning() << "Impossible d'ouvrir le fichier pour charger les profils : " << "profiles.dat";
+        }
+
+        qDebug() << "Profile renamed successfully";
+    }
+    else
+    {
+        qDebug() << "Profile does not exist";
+    }
+}
+
+void ProfileManager::changeAvatar(Profile* profile, QString newAvatarPath)
+{
+    QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+    QString profilePath = profilesPath + "/" + profile->getName();
+    qDebug() << profilePath;
+    qDebug() << profile->getName();
+    
+    QString newAvatarDest = profilePath + "/avatar_" + profile->getName() + ".png";
+    qDebug() << newAvatarDest;
+
+    //remove old avatar
+    QFile::remove(newAvatarDest);
+
+
+    if (QFile::copy(newAvatarPath, newAvatarDest))
+    {
+        qDebug() << "Avatar copied successfully";
+    }
+    else
+    {
+        qDebug() << "Error copying avatar: ";
+    }
+}
+
+
+
 
 void ProfileManager::saveProfiles(Profile* profile)
 

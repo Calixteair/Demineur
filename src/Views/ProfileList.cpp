@@ -1,7 +1,6 @@
-#include "ProfileList.h"
-#include "ProfileManager.h" // Assurez-vous d'inclure le ProfileManager
-#include "Profile.h"
-#include "MainMenu.h"
+#include "headerFiles/Views/ProfileList.h"
+#include "headerFiles/Controllers/ProfileManager.h" // Assurez-vous d'inclure le ProfileManager
+#include "headerFiles/Models/Profile.h"
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -14,6 +13,7 @@
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QCheckBox>
+#include <QDialog>
 
 #include <QVBoxLayout>
 
@@ -21,6 +21,7 @@
 ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWidget(parent), profileManager(profileManager)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
+    dialog = new ModifyProfileDialog(this);
 
     profileListView = new QListWidget(this);
     connect(profileListView, &QListWidget::itemClicked, this, &ProfileList::handleProfileItemClicked);
@@ -38,6 +39,13 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
     playButton = new QPushButton("Jouer", this);
     layout->addWidget(playButton);
     QObject::connect(playButton, &QPushButton::clicked, this, &ProfileList::handlePlayButtonClicked);
+
+    modifyProfileButton = new QPushButton("Modifier le profil", this);
+    layout->addWidget(modifyProfileButton);
+    QObject::connect(modifyProfileButton, &QPushButton::clicked, this, &ProfileList::handleModifyProfileButtonClicked);
+
+    QObject::connect(dialog, &ModifyProfileDialog::profileModified, this, &ProfileList::modifyProfile);
+
     
     updatePlayButtonState();
     loadProfiles(); // Charge les profils existants
@@ -47,6 +55,11 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
 void ProfileList::loadProfiles()
 {
     QList<Profile*> loadedProfiles = profileManager->getProfiles();
+    profiles.clear();
+
+    // Effacer les éléments de la QListWidget
+    profileListView->clear();
+
     qDebug() << "Loaded profiles: " << loadedProfiles.size();
     for (Profile* profile : loadedProfiles) {
         addProfile(profile);
@@ -185,7 +198,51 @@ void ProfileList::updatePlayButtonState()
 {
     if (profileManager->profileSelected) {
         playButton->setEnabled(true);
+        modifyProfileButton->setEnabled(true);
     } else {
         playButton->setEnabled(false);
+        modifyProfileButton->setEnabled(false);
     }
+}
+
+void ProfileList::handleModifyProfileButtonClicked(){
+
+        // Créer une instance du dialogue de modification du profil
+    
+
+
+    // Afficher le dialogue de modification du profil
+    dialog->exec();
+}
+
+
+void ProfileList::modifyProfile(const QString &name, const QString &avatarPath)
+{
+    // Mettre à jour le profil sélectionné avec les nouvelles données
+    qDebug() << "Modifying profile";
+    qDebug() << "Name: " << name;
+    qDebug() << "Avatar path: " << avatarPath;
+
+        if (!name.isEmpty()) {
+        
+            qDebug() << "Name: " << name;
+            qDebug() << profileManager->curentProfile->getName();
+            
+
+            
+            if(profileManager->curentProfile->getName() != name){
+                profileManager->changeName(profileManager->curentProfile, name);
+                profileManager->curentProfile->setName(name);
+            }
+        }
+
+        if(!avatarPath.isEmpty()){
+            qDebug() << "Avatar path: " << avatarPath;
+            profileManager->changeAvatar(profileManager->curentProfile, avatarPath);
+
+        }
+
+        profileManager->profileSelected = false;
+        updatePlayButtonState();
+        loadProfiles(); 
 }

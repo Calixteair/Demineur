@@ -10,7 +10,8 @@ SOURCES +=     main.cpp \
     src/Views/ProfileList.cpp \
     src/Views/DifficultyWindow.cpp \
     src/Views/MainWindow.cpp \
-    src/Views/RulesDialogue.cpp
+    src/Views/RulesDialogue.cpp \
+    src/Views/ModifyProfileDialog.cpp
 
 
 DESTDIR = release
@@ -31,5 +32,6 @@ HEADERS += \
     headerFiles/Views/ProfileList.h \
     headerFiles/Views/DifficultyWindow.h \
     headerFiles/Views/MainWindow.h \
-    headerFiles/Views/RulesDialogue.h
+    headerFiles/Views/RulesDialogue.h \
+    headerFiles/Views/ModifyProfileDialog.h
     

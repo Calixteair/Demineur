@@ -1,7 +1,7 @@
 #ifndef PROFILEMANAGER_H
 #define PROFILEMANAGER_H
 
-#include "Profile.h"
+#include "headerFiles/Models/Profile.h"
 #include <QList>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -21,6 +21,8 @@ public:
     void removeProfile(Profile* profile);
     void saveProfiles(Profile* profile);
     QList<Profile*> loadAllProfiles();
+    void changeName(Profile* profile, QString newName);
+    void changeAvatar(Profile* profile, QString newAvatarPath);
 
 private:
     QList<Profile*> profiles;
