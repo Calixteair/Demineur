@@ -17,6 +17,8 @@ public:
     QString getName() const;
     QString getAvatarPath() const;
     QTime getRecord(int mode);
+    QTime getRecord(int row, int col, int mines);
+
 
     void setName(const QString &name);
     void setAvatar(const QString &avatar);

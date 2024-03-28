@@ -17,11 +17,17 @@ class DemineurView : public QWidget
     
 public:
     DemineurView(int rows, int cols, int mines, QWidget *parent);
+    DemineurView(int rows, int cols, int mines, QTime time , QWidget *parent) ;
     DemineurView(QString filePath, QWidget *parent);
+    Demineur* getDemineur();
+    void setTime(QTime time);
+
+
 
 private:
     QGridLayout *gridLayout;
     Demineur *demineur;
+    QTime time;
     QTimer *timer;
     QLabel *timeLabel;
     QLabel *counterFlag;
@@ -40,6 +46,7 @@ private:
     void showWin();
     void showLoose(); 
     void ResetGame();
+        
 
 
 signals:

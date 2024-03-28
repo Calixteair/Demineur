@@ -20,13 +20,34 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
     // Layout principal
     QVBoxLayout *layout = new QVBoxLayout;
 
+     QString buttonStyle = "QPushButton {"
+                          "background-color: #4CAF50;"
+                          "border: none;"
+                          "color: white;"
+                          "padding: 10px 24px;"
+                          "text-align: center;"
+                          "text-decoration: none;"
+                          "font-size: 16px;"
+                          "margin: 4px 2px;"
+                          "border-radius: 8px;"
+                          "}"
+                          "QPushButton:hover {"
+                          "background-color: #45a049;"
+                          "color: white;"
+                          "}";
+
     // Boutons de sélection de difficulté
-    QHBoxLayout *difficultyLayout = new QHBoxLayout;
     QPushButton *beginnerButton = new QPushButton("8x8, 10 mines");
+    beginnerButton->setStyleSheet(buttonStyle);
     QPushButton *intermediateButton = new QPushButton("16x16, 40 mines");
+    intermediateButton->setStyleSheet(buttonStyle);
     QPushButton *expertButton = new QPushButton("30x16, 99 mines");
+    expertButton->setStyleSheet(buttonStyle);
     QPushButton *customButton = new QPushButton("Personnalisé");
+    customButton->setStyleSheet(buttonStyle);
     QPushButton *loadGameButton = new QPushButton("Charger une partie");
+    loadGameButton->setStyleSheet(buttonStyle);
+
 
     connect(beginnerButton, &QPushButton::clicked, this, [=]() {
         launchDemineurView(8, 8, 10);
@@ -53,23 +74,12 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
         }
 
     });
-
-    difficultyLayout->addWidget(beginnerButton);
-    difficultyLayout->addWidget(intermediateButton);
-    difficultyLayout->addWidget(expertButton);
-    difficultyLayout->addWidget(customButton);
-    difficultyLayout->addWidget(loadGameButton);
-
-    layout->addLayout(difficultyLayout);
-
-    // Bouton basculant pour la limite de temps
-    QHBoxLayout *timeLimitLayout = new QHBoxLayout;
-    QLabel *timeLimitLabel = new QLabel("Limite de temps:");
-    QCheckBox *timeLimitCheckbox = new QCheckBox;
-    timeLimitLayout->addWidget(timeLimitLabel);
-    timeLimitLayout->addWidget(timeLimitCheckbox);
-    layout->addLayout(timeLimitLayout);
-
+    layout->addWidget(beginnerButton);
+    layout->addWidget(intermediateButton);
+    layout->addWidget(expertButton);
+    layout->addWidget(customButton);
+    layout->addWidget(loadGameButton);
+  
     setLayout(layout);
 }
 

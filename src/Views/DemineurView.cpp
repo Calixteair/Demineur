@@ -25,8 +25,7 @@ DemineurView::DemineurView(QString filePath, QWidget *parent) :
 {  
 
     InitialiserView(demineur->getNbLignes(), demineur->getNbColonnes());
-
-    
+   
 }
 
 
@@ -43,6 +42,21 @@ DemineurView::DemineurView(int rows, int cols, int mines, QWidget *parent) :
 }
 
 
+DemineurView::DemineurView(int rows, int cols, int mines, QTime time , QWidget *parent) :
+    QWidget(parent), demineur(new Demineur(rows, cols, mines)),time(time) 
+{
+    
+    InitialiserView(rows, cols);
+
+    
+
+}
+
+
+void DemineurView::setTime(QTime time) {
+    time = time;
+}
+
 
 
 void DemineurView::InitialiserView(int rows , int cols){
@@ -52,6 +66,26 @@ void DemineurView::InitialiserView(int rows , int cols){
     timeElapsed = QTime(0, 0);
    
     QPushButton *saveButton = new QPushButton("Sauvegarder la partie", this);
+    saveButton->setMinimumWidth(200); // Définit une taille fixe pour le bouton
+    saveButton->setMinimumHeight(50); // Définit une taille fixe pour le bouton
+    saveButton->setMaximumWidth(300); // Définit une taille fixe pour le bouton
+    saveButton->setMaximumHeight(50); // Définit une taille fixe pour le bouton
+
+    saveButton->setStyleSheet("QPushButton {"
+                           "background-color: #4CAF50;"
+                           "padding: 10px 10px;"
+                           "border: none;"
+                           "color: white;"
+                           "text-align: center;"
+                           "text-decoration: none;"
+                           "font-size: 16px;"
+                           "margin: 4px 2px;"
+                           "border-radius: 8px;"
+                           "}"
+                           "QPushButton:hover {"
+                           "background-color: #45a049;"
+                           "color: white;"
+                           "}");
 
     connect(saveButton, &QPushButton::clicked, this, [=]() {
         QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder la partie", QDir::homePath(), "Fichiers de sauvegarde (*.sav)");
@@ -62,15 +96,27 @@ void DemineurView::InitialiserView(int rows , int cols){
 
       QVBoxLayout *layout = new QVBoxLayout(this);
 
+          layout->setAlignment(Qt::AlignCenter);
+
+
 
 
     timeLabel = new QLabel(this);
-
     timeLabel->setText("00:00:00");
-
+    timeLabel->setStyleSheet("QLabel {"
+                         "font-size: 24px;"
+                         "color: #333333;"
+                         "background-color: #f0f0f0;"
+                         "}");
+                         
     counterFlag = new QLabel(this);
+counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
+counterFlag->setStyleSheet("QLabel {"
+                           "font-size: 24px;"
+                           "color: #333333;"
+                            "background-color: #f0f0f0;"
+                           "}");
 
-    counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
 
     layout->addWidget(counterFlag);
 
@@ -94,6 +140,8 @@ void DemineurView::InitialiserView(int rows , int cols){
 
 
 
+
+
     //Verifier si la grille est plus grande que la taille de la fenêtre
     if (rows * 50 > 1080 || cols * 50 > 1920) {
         scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -110,11 +158,23 @@ void DemineurView::InitialiserView(int rows , int cols){
 
 
 
-    // Désactiver le redimensionnement automatique de la fenêtre principale
+    // redimensionner la fenetre en plein ecran
+
+    setWindowState(Qt::WindowFullScreen);
+
+    setLayout(layout);
+
+
+    
+
+
 
 
 
     createGrid(rows, cols);
+
+
+
 
 
 }
@@ -195,6 +255,9 @@ void DemineurView::updateGrid() {
 
 void DemineurView::ResetGame() {
     demineur->resetGame();
+    counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
+    timeLabel->setText("00:00:00");
+    timeElapsed = QTime(0, 0);
      for(int i = 0; i < demineur->getNbLignes() ; i++) {
         for(int j = 0; j < demineur->getNbColonnes(); j++) {
             QPushButton *button = buttons[i * demineur->getNbColonnes() + j];
@@ -320,21 +383,52 @@ void DemineurView::showWin() {
     // Show all cells to reveal the full grid
     showAll();
 
+
     if (timer->isActive()) {
         timer->stop(); // Arrêter le chronomètre
     }
-    
-    // Display a message box indicating the win
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "Gagné", "Vous avez gagné ! Voulez-vous rejouer ?", QMessageBox::Yes|QMessageBox::No);
+
+    // verifier si tim est fournis et en suite verifier si le temps est inferieur au temps enregistrer 
     emit endGameRequest(demineur->getNbLignes(), demineur->getNbColonnes(), demineur->getNbMines(), timeElapsed, true);
+            std::cout << "jenvois le signal !!!" << std::endl;
+
+    std::cout << time.toString().toStdString() <<  " ici la" <<  timeElapsed.toString().toStdString() << std::endl;
+
+    QMessageBox::StandardButton reply;
+
+
+
+    if( time.toString().toStdString().empty() || time > timeElapsed)
+    {
+
+        // Display a message box indicating the win
+    reply = QMessageBox::question(this, "Gagné", QString("Tu as battu ton record: %1").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ResetGame();
+        
     } else {
         // If the user chooses not to replay, go back to the main menu
         // Implement the functionality to go back to the main menu here
         emit BackToMain();
     }
+        
+    }else{
+
+         reply = QMessageBox::question(this, "Gagné", QString("Le temps que tu as pris : %1 \nveux-tu rejouer ?").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        std::cout << "je suis passe dans resetgame de ShowWin" << std::endl;
+        ResetGame();
+        
+    } else {
+        // If the user chooses not to replay, go back to the main menu
+        // Implement the functionality to go back to the main menu here
+        emit BackToMain();
+    }
+
+
+    }
+    
+    
 }
 
 void DemineurView::showLoose() {
@@ -351,8 +445,6 @@ void DemineurView::showLoose() {
     emit endGameRequest(demineur->getNbLignes(), demineur->getNbColonnes(), demineur->getNbMines(), timeElapsed, false);
     if (reply == QMessageBox::Yes) {
                 ResetGame();
-                counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
-                timeLabel->setText("00:00:00");
 
 
     } else {
@@ -363,3 +455,7 @@ void DemineurView::showLoose() {
     }
 }
 
+
+Demineur* DemineurView::getDemineur() {
+    return demineur;
+}

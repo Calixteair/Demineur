@@ -45,15 +45,24 @@ MainWindow::MainWindow(QWidget *parent)
     navbar->setStyleSheet("QWidget#navbar { background-color: rgb(50, 50, 50); }");
     QHBoxLayout *navbarLayout = new QHBoxLayout(navbar);
     QPushButton *homeButton = new QPushButton("Accueil", navbar);
-    //homeButton->setStyleSheet("QPushButton { color: white; }");
+    homeButton->setStyleSheet("QPushButton { background-color: transparent; border: none; color: white; }");
+
     QMenu *settingsMenu = new QMenu("Paramètres", navbar);
+    settingsMenu->setStyleSheet("QMenu { background-color: rgb(50, 50, 50); color: white; }");
+
     settingsMenu->adjustSize();
-    //settingsMenu->setStyleSheet("QPushButton { color: white; }");
     QPushButton *helpButton = new QPushButton("Aide", navbar);
-    //helpButton->setStyleSheet("QPushButton { color: white; }");
+    helpButton->setStyleSheet("QPushButton { background-color: transparent; border: none; color: white; }");
+
     navbarLayout->addWidget(homeButton);
     navbarLayout->addWidget(settingsMenu);
     navbarLayout->addWidget(helpButton);
+
+
+
+
+
+
 
     // Définir la navbar comme barre de menus
     setMenuWidget(navbar);
@@ -177,7 +186,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::openDemineurPageWithDifficulty(int rows, int cols, int mines) {
     // Créez une instance de DemineurPage en fonction de la difficulté choisie
-    DemineurView *newDemineurPage = new DemineurView(rows, cols, mines, this);
+    DemineurView *newDemineurPage = nullptr ;
+    if(profileManager->getProfileSelected())
+
+    {
+
+        QTime time = profileManager->curentProfile->getRecord(rows, cols, mines);
+
+         newDemineurPage = new DemineurView(rows, cols, mines, time , this);
+    }
+    else
+    {
+         newDemineurPage = new DemineurView(rows, cols, mines, this);
+    }
 
     QObject::connect(newDemineurPage, &DemineurView::BackToMain, this, &MainWindow::BackToMainPage);
 
@@ -189,7 +210,27 @@ void MainWindow::openDemineurPageWithDifficulty(int rows, int cols, int mines) {
 
 void MainWindow::openDemineurPageWithFilePATH(QString filePath) {
     // Créez une instance de DemineurPage en fonction du fichier de sauvegarde
-    DemineurView *newDemineurPage = new DemineurView(filePath, this);
+
+
+    DemineurView *newDemineurPage = nullptr ;
+    if(profileManager->getProfileSelected())
+
+    {
+
+        newDemineurPage = new DemineurView(filePath, this);
+
+        Demineur *demineur = newDemineurPage->getDemineur();        
+        int cols = demineur->getNbColonnes();
+        int rows = demineur->getNbLignes(); 
+        int mines = demineur->getNbMines();
+        QTime time = profileManager->curentProfile->getRecord(rows, cols, mines);
+        newDemineurPage->setTime(time);
+
+    }
+    else{
+        newDemineurPage = new DemineurView(filePath, this);
+    }
+    
     stackedWidget->addWidget(newDemineurPage);
     stackedWidget->setCurrentWidget(newDemineurPage);
 
@@ -250,7 +291,7 @@ void MainWindow::setVolume(int volume)
 void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
 
 
-    profileManager->addGame(rows, cols, mines, win);
+    profileManager->addGame(rows, cols, mines,time, win);
     qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
     
 
