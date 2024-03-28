@@ -60,35 +60,35 @@ void ProfileManager::updaterecord(Profile* profile, QTime time, int mode){
     QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
     QString profilePath = profilesPath + "/" + profile->getName();
     QFile file(profilePath + "/profiles.json");
+    profile->setRecord(mode, time);
 
     if (file.open(QIODevice::ReadWrite | QIODevice::Text))
     {
-        QJsonParseError jsonError;
-        QJsonDocument doc = QJsonDocument::fromJson(file.readAll(), &jsonError);
+    
+        QJsonObject profileJson;
+        //QJsonObject recordsJson = profileJson["records"].toObject();
+        profileJson["name"] = profile->getName();
 
-        if (jsonError.error != QJsonParseError::NoError)
-        {
-            qWarning() << "Erreur lors de l'analyse du fichier JSON : " << jsonError.errorString();
-            return;
-        }
-        QJsonObject profileJson = doc.object();
-        QJsonObject recordsJson = profileJson["records"].toObject();
+        QJsonObject recordsJson;
+        recordsJson["easy"] = profile->getRecord(0).toString("hh:mm:ss");
+        recordsJson["medium"] = profile->getRecord(1).toString("hh:mm:ss");
+        recordsJson["hard"] = profile->getRecord(2).toString("hh:mm:ss");
+        recordsJson["custom"] = profile->getRecord(3).toString("hh:mm:ss");
 
-        // Mettre à jour les enregistrements dans recordsJson
-        recordsJson[QString::number(mode)] = time.toString("hh:mm:ss");
-
-        // Mettre à jour l'objet "records" dans profileJson
         profileJson["records"] = recordsJson;
 
-        // Réécrire profileJson dans le document JSON
-        doc.setObject(profileJson);
+        profileJson["uuid"] = profile->getUuid();
 
-        // Réécrire le document JSON dans le fichier
-        file.resize(0); // Effacer le contenu existant
+        profileJson["partiesJouer"] = profile->getPartiesJouer();
+        profileJson["partiesGagner"] = profile->getPartiesGagner();
+        profileJson["partiesPerdu"] = profile->getPartiesPerdu();
+
+        profileJson["dateCreated"] = QDate::currentDate().toString("yyyy-MM-dd");
+
+        QJsonDocument doc(profileJson);
         file.write(doc.toJson());
-        file.close();
 
-        profile->setRecord(mode, time);
+
 
         qDebug() << "Record updated successfully";
 
@@ -303,10 +303,10 @@ QList<Profile*> ProfileManager::loadAllProfiles()
             QTime hardRecord = QTime::fromString(recordsJson["hard"].toString(), "hh:mm:ss");
             QTime customRecord = QTime::fromString(recordsJson["custom"].toString(), "hh:mm:ss");
 
-            profile->setRecord(1, easyRecord);
-            profile->setRecord(2, mediumRecord);
-            profile->setRecord(3, hardRecord);
-            profile->setRecord(4, customRecord);
+            profile->setRecord(0, easyRecord);
+            profile->setRecord(1, mediumRecord);
+            profile->setRecord(2, hardRecord);
+            profile->setRecord(3, customRecord);
 
 
             profile->setUuid(profileJson["uuid"].toString());
@@ -395,10 +395,10 @@ QList<Profile*> ProfileManager::loadAllProfiles()
                 profileJson["name"] = profile->getName();
 
                 QJsonObject recordsJson;
-                recordsJson["easy"] = profile->getRecord(1).toString("hh:mm:ss");
-                recordsJson["medium"] = profile->getRecord(2).toString("hh:mm:ss");
-                recordsJson["hard"] = profile->getRecord(3).toString("hh:mm:ss");
-                recordsJson["custom"] = profile->getRecord(4).toString("hh:mm:ss");
+                recordsJson["easy"] = profile->getRecord(0).toString("hh:mm:ss");
+                recordsJson["medium"] = profile->getRecord(1).toString("hh:mm:ss");
+                recordsJson["hard"] = profile->getRecord(2).toString("hh:mm:ss");
+                recordsJson["custom"] = profile->getRecord(3).toString("hh:mm:ss");
 
                 profileJson["records"] = recordsJson;
 

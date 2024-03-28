@@ -8,7 +8,7 @@ Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_a
 {
 
     // Initialize records to 0
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 4; ++i) {
             m_records[i] = QTime(0, 0, 0); // 00:00:00
     }
 
