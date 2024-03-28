@@ -31,6 +31,11 @@ QList<Profile *> ProfileManager::getProfiles()
     return profiles;
 }
 
+QList<Profile *> ProfileManager::getProfilesList()
+{
+    return profiles;
+}
+
 void ProfileManager::addProfile(Profile *profile)
 {
     profiles.append(profile);

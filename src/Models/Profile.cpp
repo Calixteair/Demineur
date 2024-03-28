@@ -79,7 +79,7 @@ void Profile::setRecord(int index, QTime time) {
     }
 }
 
-QTime Profile::getRecord(int index) {
+QTime Profile::getRecord(int index) const {
     if (index >= 0 && index <= 3) {
         return m_records[index];
     } else {
@@ -134,19 +134,19 @@ void Profile::setAvatarPath(QString avatarPath)
     m_avatar = avatarPath;
 }
 
-int Profile::getPartiesJouer()
+int Profile::getPartiesJouer() const
 {
     return m_partiesJouer;
 }
 
 
-int Profile::getPartiesGagner()
+int Profile::getPartiesGagner() const
 {
     return m_partiesGagner;
 }
 
 
-int Profile::getPartiesPerdu()
+int Profile::getPartiesPerdu() const
 {
     return m_partiesPerdu;
 } 

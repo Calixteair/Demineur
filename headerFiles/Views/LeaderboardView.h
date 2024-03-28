@@ -18,7 +18,8 @@ public:
 private slots:
     void sortByParameter();
     void updateLeaderboard();
-    void updateDisplay();
+    void updateDisplay(int mode);
+    void updateListe();
 
 private:
     QVBoxLayout *m_layout;
@@ -26,6 +27,7 @@ private:
     QVBoxLayout *m_leaderboard_view;
     Leaderboard m_leaderboard;
     ProfileManager* profileManager;
+    QList<Profile*> profilesSorted;
 };
 
 #endif // LEADERBOARDVIEW_H

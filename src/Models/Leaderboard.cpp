@@ -9,37 +9,41 @@ Leaderboard::Leaderboard(ProfileManager* profileManager, QObject *parent)
     // Autres initialisations si nécessaire...
 }
 
-void Leaderboard::addProfile(Profile *profile) {
-    LeaderboardEntry entry;
-    entry.avatarPath = profile->getAvatarPath();
-    entry.name = profile->getName();
-    // Utilisez ici le paramètre souhaité pour classer les joueurs
-    // Par exemple, si le paramètre est un temps en QTime :
-    entry.parameterValue = profile->getRecord(0); // Utilisez le premier record comme paramètre par défaut
-    entry.parameterValueInt = profile->getRecord(0).msecsSinceStartOfDay();
-    m_leaderboardEntries.append(entry);
-    m_leaderboardEntriesInt.append(entry);
-}
 
-bool compareEntries(const Leaderboard::LeaderboardEntry &a, const Leaderboard::LeaderboardEntry &b) {
-    // Modifiez cette fonction de comparaison selon le paramètre souhaité
-    return a.parameterValue < b.parameterValue;
-}
-void Leaderboard::sortByParameter(int mode) {
-    // Supposons que vous ayez déjà les données nécessaires pour le tri dans votre classe Leaderboard
+
+void Leaderboard::sortByParameter(int mode, QList<Profile*> &profiles) {
+    // Effectuez le tri sur la QList de profils en fonction du mode spécifié
     if (mode == 0) {
-        // Effectuez le tri par paramètre de temps
-        std::sort(m_leaderboardEntries.begin(), m_leaderboardEntries.end(), [](const LeaderboardEntry& a, const LeaderboardEntry& b) {
-            return a.parameterValue < b.parameterValue;
+        // Tri par le premier enregistrement (mode 0)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            //cas pas initialiser
+            return a->getRecord(0) < b->getRecord(0);
         });
     } else if (mode == 1) {
-        // Effectuez le tri par paramètre entier
-        std::sort(m_leaderboardEntries.begin(), m_leaderboardEntries.end(), [](const LeaderboardEntry& a, const LeaderboardEntry& b) {
-            return a.parameterValueInt < b.parameterValueInt;
+        // Tri par le deuxième enregistrement (mode 1)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            return a->getRecord(1) < b->getRecord(1);
+        });
+    } else if (mode == 2) {
+        // Tri par le troisième enregistrement (mode 2)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            return a->getRecord(2) < b->getRecord(2);
+        });
+    } else if (mode == 3) {
+        // Tri par le nombre de parties jouées (mode 3)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            return a->getPartiesJouer() > b->getPartiesJouer();
+        });
+    } else if (mode == 4) {
+        // Tri par le nombre de parties gagnées (mode 4)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            return a->getPartiesGagner() > b->getPartiesGagner();
+        });
+    } else if (mode == 5) {
+        // Tri par le nombre de parties perdues (mode 5)
+        std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            return a->getPartiesPerdu() > b->getPartiesPerdu();
         });
     }
 }
 
-QVector<Leaderboard::LeaderboardEntry> Leaderboard::getLeaderboardEntries() const {
-    return m_leaderboardEntries;
-}

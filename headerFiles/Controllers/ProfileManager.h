@@ -28,6 +28,7 @@ public:
     void addGame(int col, int row, int mines, QTime time , bool win);
     void refreshProfileinFile(Profile* profile);
     bool getProfileSelected();
+    QList<Profile*> getProfilesList();
 
 private:
     QList<Profile*> profiles;

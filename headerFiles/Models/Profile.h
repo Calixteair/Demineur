@@ -16,7 +16,7 @@ public:
 
     QString getName() const;
     QString getAvatarPath() const;
-    QTime getRecord(int mode);
+    QTime getRecord(int mode) const;
     QTime getRecord(int row, int col, int mines);
 
 
@@ -28,9 +28,9 @@ public:
     void setPartiesGagner(int nb);
     void setPartiesPerdu(int nb);
     void setAvatarPath(QString path);
-    int getPartiesJouer();
-    int getPartiesGagner();
-    int getPartiesPerdu();
+    int getPartiesJouer() const;
+    int getPartiesGagner() const;
+    int getPartiesPerdu() const;
     QString getAvatarPath();
     QString getUuid();
 

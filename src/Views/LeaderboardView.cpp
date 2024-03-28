@@ -1,6 +1,10 @@
 #include "headerFiles/Models/Leaderboard.h"
 #include "headerFiles/Views/LeaderboardView.h"
 #include "headerFiles/Controllers/ProfileManager.h"
+#include <QLabel>
+#include <QPushButton>
+#include <QDebug>
+
 
 LeaderboardView::LeaderboardView(ProfileManager* profileManager, QWidget *parent) 
     : QWidget(parent), profileManager(profileManager), m_leaderboard(profileManager)
@@ -25,17 +29,7 @@ LeaderboardView::LeaderboardView(ProfileManager* profileManager, QWidget *parent
     m_leaderboard_view->addWidget(new QLabel("Leaderboard"));
 
     // Afficher la liste des profils
-    QList<Profile*> profiles = profileManager->getProfiles();
-    for (int i = 0; i < profiles.size(); ++i) {
-        QLabel *indexLabel = new QLabel(QString::number(i + 1));
-        QLabel *nameLabel = new QLabel(profiles[i]->getName());
-        QLabel *paramLabel = new QLabel(QString::number(profiles[i]->getRecord(0).msecsSinceStartOfDay())); // Utilisez le premier record comme paramètre par défaut
-        QHBoxLayout *profileLayout = new QHBoxLayout;
-        profileLayout->addWidget(indexLabel);
-        profileLayout->addWidget(nameLabel);
-        profileLayout->addWidget(paramLabel);
-        m_leaderboard_view->addLayout(profileLayout);
-    }
+    updateLeaderboard();
 }
 
 void LeaderboardView::sortByParameter() {
@@ -57,8 +51,7 @@ void LeaderboardView::sortByParameter() {
         } else if (parameterName == "Games Lost") {
             mode = 5;
         }
-        m_leaderboard.sortByParameter(mode);
-        updateDisplay();
+        updateDisplay(mode);
         // reactiver tous les boutons
         for (int i = 0; i < m_button_layout->count(); ++i) {
             QPushButton *button = qobject_cast<QPushButton*>(m_button_layout->itemAt(i)->widget());
@@ -72,29 +65,59 @@ void LeaderboardView::sortByParameter() {
 }
 
 void LeaderboardView::updateLeaderboard() {
-    QList<Profile*> profiles = profileManager->getProfiles();
-    for (int i = 0; i < profiles.size(); ++i) {
-        QLabel *paramLabel = qobject_cast<QLabel*>(m_layout->itemAt(i + 2)->layout()->itemAt(2)->widget());
-        paramLabel->setText(QString::number(profiles[i]->getRecord(0).msecsSinceStartOfDay())); // Utilisez le premier record comme paramètre par défaut
-    }
+    updateDisplay(0); // Mettre à jour l'affichage avec le mode de tri par défaut
 }
 
-void LeaderboardView::updateDisplay() {
+void LeaderboardView::updateDisplay(int mode) {
+    // Tri des profils en fonction du mode spécifié
+    updateListe();
+   m_leaderboard.sortByParameter(mode, profilesSorted);
 
-    // Supprimer les anciennes entrées
+    // Supprimer les anciennes entrées du layout
     QLayoutItem *child;
     while ((child = m_layout->takeAt(2)) != nullptr) {
         delete child->widget();
         delete child;
     }
-    
 
-    // Afficher les nouvelles entrées triées
-    QVector<Leaderboard::LeaderboardEntry> entries = m_leaderboard.getLeaderboardEntries();
-    for (const auto &entry : entries) {
-        QLabel *label = new QLabel;
-        label->setText(QString("%1 - %2").arg(entry.rank).arg(entry.name));
-        m_layout->addWidget(label);
+    
+    int index = 1; // Index pour affichage
+    for (Profile *profile : profilesSorted) {
+        QLabel *indexLabel = new QLabel(QString::number(index)); // Afficher l'index
+        m_layout->addWidget(indexLabel);
+
+        QLabel *nameLabel = new QLabel(profile->getName()); // Afficher le nom du profil
+        m_layout->addWidget(nameLabel);
+
+        QLabel *parameterLabel; // Afficher le paramètre utilisé pour le tri
+        if (mode == 0) {
+            parameterLabel = new QLabel(profile->getRecord(0).toString()); // Afficher le temps pour le mode 0
+        } else if (mode == 1) {
+            parameterLabel = new QLabel(profile->getRecord(1).toString()); // Afficher le nombre pour le mode 1
+        } else if (mode == 2) {
+            parameterLabel = new QLabel(profile->getRecord(2).toString()); // Afficher le nombre pour le mode 1
+        }  
+        else if (mode == 3) {
+            parameterLabel = new QLabel(QString::number(profile->getPartiesJouer())); // Afficher le nombre pour le mode 1
+        }  
+        else if (mode == 4) {
+            parameterLabel = new QLabel(QString::number(profile->getPartiesGagner())); // Afficher le nombre pour le mode 1
+        }  
+        else if (mode == 5) {
+            parameterLabel = new QLabel(QString::number(profile->getPartiesPerdu())); // Afficher le nombre pour le mode 1
+        }
+
+        m_layout->addWidget(parameterLabel);
+
+        index++; // Incrémenter l'index pour chaque profil
+    }
+}
+
+void LeaderboardView::updateListe() {
+    profilesSorted.clear();
+    QList<Profile*> profiles = profileManager->getProfiles();
+    for (int i = 0; i < profiles.size(); ++i) {
+        profilesSorted.append(profiles[i]);
     }
 }
 

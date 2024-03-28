@@ -17,32 +17,16 @@ class Leaderboard : public QObject
 public:
     Leaderboard(ProfileManager* profileManager, QObject *parent = nullptr); 
 
-    // Structure de données pour stocker les informations du leaderboard
-    struct LeaderboardEntry {
-        int rank;
-        QString avatarPath;
-        QString name;
-        QTime parameterValue; // Paramètre utilisé pour classer les joueurs
-        int parameterValueInt;
 
-    };
-    
-
-    // Méthode pour ajouter un profil au leaderboard
-    void addProfile(Profile *profile);
 
     // Méthode pour trier le leaderboard en fonction du paramètre spécifié
-    void sortByParameter(int mode);
+    void sortByParameter(int mode, QList<Profile*> &profiles);
 
-    // Méthode pour récupérer les entrées du leaderboard
-    QVector<LeaderboardEntry> getLeaderboardEntries() const;
 
 signals:
 
 private:
     ProfileManager* profileManager;
-    QVector<LeaderboardEntry> m_leaderboardEntries;
-    QVector<LeaderboardEntry> m_leaderboardEntriesInt;
 };
 
 #endif // LEADERBOARD_H
