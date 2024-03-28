@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QString>
 #include "headerFiles/Models/Leaderboard.h"
 #include "headerFiles/Controllers/ProfileManager.h"
 
@@ -18,13 +19,17 @@ public:
 private slots:
     void sortByParameter();
     void updateLeaderboard();
-    void updateDisplay(int mode);
+    void updateDisplay(int mode, QString parameterName);
     void updateListe();
 
 private:
     QVBoxLayout *m_layout;
     QHBoxLayout *m_button_layout;
-    QVBoxLayout *m_leaderboard_view;
+    QLabel *indexHeader;
+    QHBoxLayout *headerLayout;
+    QLabel *avatarHeader;
+    QLabel *nameHeader;
+    QLabel *parameterHeader;
     Leaderboard m_leaderboard;
     ProfileManager* profileManager;
     QList<Profile*> profilesSorted;

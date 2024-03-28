@@ -22,5 +22,7 @@
     <file>img/marker.png</file>
     <file>img/mine.png</file>
     <file>img/mine2.png</file>
+    <file>img/cup.png</file>
+
 </qresource>
 </RCC>

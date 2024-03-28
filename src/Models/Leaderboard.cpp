@@ -1,6 +1,7 @@
 #include "headerFiles/Models/Leaderboard.h"
 #include "headerFiles/Models/Profile.h"
 #include "headerFiles/Controllers/ProfileManager.h"
+#include <QDebug>
 
 #include <algorithm>
 
@@ -16,17 +17,34 @@ void Leaderboard::sortByParameter(int mode, QList<Profile*> &profiles) {
     if (mode == 0) {
         // Tri par le premier enregistrement (mode 0)
         std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
-            //cas pas initialiser
+            if (a->getRecord(0) == QTime(0, 0, -1)) {
+                return false;
+            }
+            if (b->getRecord(0) == QTime(0, 0, -1)) {
+                return true;
+            }
             return a->getRecord(0) < b->getRecord(0);
         });
     } else if (mode == 1) {
         // Tri par le deuxième enregistrement (mode 1)
         std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            if (a->getRecord(1) == QTime(0, 0, -1)) {
+                return false;
+            }
+            if (b->getRecord(1) == QTime(0, 0, -1)) {
+                return true;
+            }
             return a->getRecord(1) < b->getRecord(1);
         });
     } else if (mode == 2) {
         // Tri par le troisième enregistrement (mode 2)
         std::sort(profiles.begin(), profiles.end(), [](const Profile* a, const Profile* b) {
+            if (a->getRecord(2) == QTime(0, 0, -1)) {
+                return false;
+            }
+            if (b->getRecord(2) == QTime(0, 0, -1)) {
+                return true;
+            }
             return a->getRecord(2) < b->getRecord(2);
         });
     } else if (mode == 3) {
