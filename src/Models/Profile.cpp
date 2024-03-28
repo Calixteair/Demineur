@@ -29,7 +29,7 @@ Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_a
 Profile::Profile() : m_name(""), m_avatar("")
 {
     // Initialize records to 0
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i <= 3; ++i) {
             m_records[i] = QTime(0, 0, 0); // 00:00:00
     }
 }
@@ -64,13 +64,13 @@ QString Profile::getAvatarPath()
 }
 
 void Profile::setRecord(int index, QTime time) {
-    if (index >= 0 && index < 3) {
+    if (index >= 0 && index <= 3) {
         m_records[index] = time;
     }
 }
 
 QTime Profile::getRecord(int index) {
-    if (index >= 0 && index < 3) {
+    if (index >= 0 && index <= 3) {
         return m_records[index];
     } else {
         return QTime(0, 0, 0); // Retourner 00:00:00 si l'index est invalide
