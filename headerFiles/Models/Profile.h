@@ -30,6 +30,11 @@ public:
     int getEasyRecord();
     int getMediumRecord();
     int getHardRecord();
+    int getPartiesJouer();
+    int getPartiesGagner();
+    int getPartiesPerdu();
+    int getCustomRecord();
+    
     QString getAvatarPath();
     QString getUuid();
 
@@ -39,7 +44,7 @@ private:
     QString m_uuid;
     QString m_name;
     QString m_avatar;
-    int m_records[3]; // Store records for each mode
+    int m_records[4]; // Store records for each mode
     int m_partiesJouer;
     int m_partiesGagner;
     int m_partiesPerdu;

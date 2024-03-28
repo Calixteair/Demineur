@@ -11,7 +11,13 @@ Demineur::Demineur()
 {
 }
 
-Demineur::Demineur(int lignes, int colonnes, int mines) : nbLignes(lignes), nbColonnes(colonnes), nbMines(mines), gameState(INIT)
+        Demineur::Demineur(int lignes, int colonnes, int mines) : nbLignes(lignes), nbColonnes(colonnes), nbMines(mines), drapeau(0) , gameState(INIT) 
+{   
+    initialiserGrille();
+        }
+
+
+Demineur::Demineur(int lignes, int colonnes, int mines, int drapeau ) : nbLignes(lignes), nbColonnes(colonnes), nbMines(mines), drapeau(drapeau) , gameState(INIT)
 {
     initialiserGrille();
 }
@@ -34,7 +40,7 @@ int Demineur::importeGame(const char *filename)
         return -1;
     }
 
-    file >> nbLignes >> nbColonnes >> nbMines;
+    file >> nbLignes >> nbColonnes >> nbMines >> drapeau;
 
     for (int i = 0; i < nbLignes; ++i)
     {
@@ -66,7 +72,7 @@ void Demineur::sauvegarderGame(const char *filename)
         return;
     }
 
-    file << nbLignes << " " << nbColonnes << " " << nbMines << endl;
+    file << nbLignes << " " << nbColonnes << " " << nbMines << " " << drapeau << endl;
 
     for (int i = 0; i < nbLignes; ++i)
     {
@@ -232,6 +238,7 @@ bool Demineur::play(int x, int y)
         {
             initialiserGrilleXY(x, y);
         }
+        drapeau = 0;
         gameState = EN_COURS;
     }
 
@@ -264,6 +271,11 @@ bool Demineur::play(int x, int y)
         if (grilleCachee[j][i] == 1)
         {
             continue;
+        }
+        if(grilleCachee[j][i] == 2)
+        {
+            drapeau--;
+           
         }
         grilleCachee[j][i] = 1;
         if (grille[j][i] == 0)
@@ -306,14 +318,17 @@ bool Demineur::play(int x, int y)
 
 void Demineur::marquerCase(int x, int y)
 {
-    if (grilleCachee[y][x] == 0)
+    if (grilleCachee[y][x] == 0 && drapeau < nbMines)
     {
         grilleCachee[y][x] = 2;
+        drapeau++;
     }
-    else if (grilleCachee[y][x] == 2)
+    else if (grilleCachee[y][x] == 2 && drapeau > 0)
     {
         grilleCachee[y][x] = 0;
+        drapeau--;
     }
+
 }
 
 void Demineur::afficherGrille()
@@ -374,6 +389,12 @@ int Demineur::getNbColonnes()
 int Demineur::getNbMines()
 {
     return nbMines;
+}
+
+
+int Demineur::getNbFlag()
+{
+    return drapeau;    
 }
 
 int Demineur::getCellValue(int x, int y)

@@ -23,6 +23,8 @@ public:
     QList<Profile*> loadAllProfiles();
     void changeName(Profile* profile, QString newName);
     void changeAvatar(Profile* profile, QString newAvatarPath);
+    void addGame(int col, int row, int mines, bool win);
+    void refreshProfileinFile(Profile* profile);
 
 private:
     QList<Profile*> profiles;

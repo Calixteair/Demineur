@@ -1,4 +1,4 @@
-#include "Profile.h"
+#include "../headerFiles/Models/Profile.h"
 #include <QFile>
 #include <QDataStream>
 #include <QDebug>
@@ -6,7 +6,7 @@
 Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_avatar(avatar)
 {
     // Initialize records to 0
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 4; ++i) {
         m_records[i] = 0;
     }
 
@@ -27,7 +27,7 @@ Profile::Profile(const QString &name, const QString &avatar) : m_name(name), m_a
 Profile::Profile() : m_name(""), m_avatar("")
 {
     // Initialize records to 0
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 4; ++i) {
         m_records[i] = 0;
     }
 }
@@ -134,4 +134,24 @@ void Profile::setAvatarPath(QString avatarPath)
     m_avatar = avatarPath;
 }
 
+int Profile::getPartiesJouer()
+{
+    return m_partiesJouer;
+}
 
+
+int Profile::getPartiesGagner()
+{
+    return m_partiesGagner;
+}
+
+
+int Profile::getPartiesPerdu()
+{
+    return m_partiesPerdu;
+} 
+
+int Profile::getCustomRecord()
+{
+    return m_records[3];
+}

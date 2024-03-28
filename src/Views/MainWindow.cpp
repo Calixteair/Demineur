@@ -1,9 +1,9 @@
 // MainWindow.cpp
-#include "MainWindow.h"
-#include "DifficultyWindow.h"
-#include "ProfileList.h"
-#include "RulesDialogue.h"
-#include "MainMenu.h"
+#include "../headerFiles/Views/MainWindow.h"
+#include "../headerFiles/Views/DifficultyWindow.h"
+#include "../headerFiles/Views/ProfileList.h"
+#include "../headerFiles/Views/RulesDialogue.h"
+#include "../headerFiles/Views/MainMenu.h"
 #include <QStackedWidget>
 #include <QDebug>
 #include <QPushButton>
@@ -17,8 +17,8 @@
 #include <QMenuBar>
 #include <QStandardPaths>
 #include <QRandomGenerator>
-
 #include <QDir>
+#include <QTime>
 
 
 
@@ -176,6 +176,8 @@ void MainWindow::openDemineurPageWithDifficulty(int rows, int cols, int mines) {
 
     QObject::connect(newDemineurPage, &DemineurView::BackToMain, this, &MainWindow::BackToMainPage);
 
+    QObject::connect(newDemineurPage, &DemineurView::endGameRequest, this, &MainWindow::endGame);
+
     stackedWidget->addWidget(newDemineurPage);
     stackedWidget->setCurrentWidget(newDemineurPage);
 }
@@ -238,4 +240,21 @@ void MainWindow::setVolume(int volume)
     music->setVolume(volume);
 
 }
+
+void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
+
+
+    profileManager->addGame(rows, cols, mines, win);
+    qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
+    
+
+
+
+
+}
+
+
+
+
+
 

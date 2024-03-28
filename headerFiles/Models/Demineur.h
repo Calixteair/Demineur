@@ -10,6 +10,7 @@ public:
     int nbLignes;
     int nbColonnes;
     int nbMines;
+    int drapeau = 0;
     int grille[100][100];
     int grilleCachee[100][100];
     enum Etat {
@@ -22,7 +23,10 @@ public:
 
     Etat gameState;
 
+    Demineur(int lignes, int colonnes, int mines , int drapeau);
+    
     Demineur(int lignes, int colonnes, int mines);
+
 
     Demineur(const char* filename);
 
@@ -55,6 +59,8 @@ public:
     int getNbColonnes();
 
     int getNbMines();
+
+    int getNbFlag();
 
     int getCellValue(int x, int y);
 

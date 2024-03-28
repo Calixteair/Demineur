@@ -3,8 +3,11 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <QTimer>
+#include <QTime>
+#include <QLabel>
 #include <QPushButton>
-#include "Demineur.h"
+#include "../Models/Demineur.h"
 #include <QMouseEvent> // Ajout de l'inclusion pour utiliser QMouseEvent
 
 
@@ -19,8 +22,14 @@ public:
 private:
     QGridLayout *gridLayout;
     Demineur *demineur;
+    QTimer *timer;
+    QLabel *timeLabel;
+    QLabel *counterFlag;
+    QTime timeElapsed;
     QVector<QPushButton*> buttons;
     void mousePressEvent(QMouseEvent *event);
+    void updateTime();
+    void InitialiserView(int rows , int cols);
 
     void createGrid(int nbLigne, int nbColonne);
     void updateGrid();
@@ -35,6 +44,7 @@ private:
 
 signals:
     void BackToMain();
+    void endGameRequest(int rows , int cols, int mines, QTime time, bool wind);
 };
 
 #endif // DEMINEURVIEW_H

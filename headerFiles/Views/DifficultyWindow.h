@@ -26,10 +26,14 @@ public:
 signals:
     void demineurViewRequested(int rows, int cols, int mines);
     void demineurViewRequestedWithFile(QString filePath);
+    void endGameRequest(int rows , int cols, int mines, QTime time, bool wind);
+
+    
 
 
 private slots:
     void showCustomDialog();
+
 
 
 private:
