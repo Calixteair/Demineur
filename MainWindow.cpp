@@ -16,6 +16,8 @@
 #include <QWidgetAction>
 #include <QMenuBar>
 #include <QStandardPaths>
+#include <QRandomGenerator>
+
 #include <QDir>
 
 
@@ -86,8 +88,14 @@ MainWindow::MainWindow(QWidget *parent)
         playlist->previous();
     });
 
+    randomSong = new QAction("Random music", this);
+    QObject::connect(randomSong, &QAction::triggered, [this]() {
+        playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
+    });
+
     settingsMenu->addAction(nextSong);
     settingsMenu->addAction(prevSong);
+    settingsMenu->addAction(randomSong);
 
 
 
@@ -122,8 +130,20 @@ MainWindow::MainWindow(QWidget *parent)
     // Musique de fond
 
     playlist = new QMediaPlaylist(this);
+    playlist->addMedia(QUrl("qrc:/music/menuLoop.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/BackOnTrack.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/BaseAfterBase.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/Deadlocked.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/DryOut.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/Electrodynamix.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/Jumper.mp3"));
     playlist->addMedia(QUrl("qrc:/music/let-the-games-begin-21858.mp3"));
     playlist->addMedia(QUrl("qrc:/music/neon-gaming-128925.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/Polargeist.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/StereoMadness.mp3"));
+    playlist->addMedia(QUrl("qrc:/music/xStep.mp3"));
+
+
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     music = new QMediaPlayer(this);
     music->setPlaylist(playlist);
@@ -178,24 +198,29 @@ void MainWindow::openDifficultyWindow()
 {
     qDebug() << "Ouverture de la fenêtre de sélection de difficulté";
     stackedWidget->setCurrentWidget(difficultyWindow);
+    // mettre une music aléatoire
+    playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 }
 
 void MainWindow::openProfileWindow()
 {
     qDebug() << "Ouverture de la fenêtre de profil";
     stackedWidget->setCurrentWidget(profileList);
+    playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 
 }
 
 void MainWindow::openLeaderboardWindow()
 {
     qDebug() << "Ouverture de la fenêtre de leaderboard";
+    playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 }
 
 void MainWindow::openMainWindow()
 {
     qDebug() << "Ouverture de la fenêtre de jeu";
     stackedWidget->setCurrentWidget(mainMenu);
+    playlist->setCurrentIndex(0); 
 }
 
 void MainWindow::toggleMute()
@@ -212,5 +237,5 @@ void MainWindow::setVolume(int volume)
 
     music->setVolume(volume);
 
-
 }
+

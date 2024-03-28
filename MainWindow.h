@@ -49,6 +49,7 @@ private:
     QAction *muteAction;
     QAction *prevSong;
     QAction *nextSong;
+    QAction *randomSong;
     QSlider *volumeSlider;
     QString *currentProfile;
 

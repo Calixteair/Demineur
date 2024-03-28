@@ -1,8 +1,24 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
     <file>rules.html</file>
-    <file>music/let-the-games-begin-21858.mp3</file>
-    <file>music/neon-gaming-128925.mp3</file>
+
+
+<file>music/BackOnTrack.mp3</file>
+<file>music/BaseAfterBase.mp3</file>
+<file>music/Deadlocked.mp3</file>
+<file>music/DryOut.mp3</file>
+<file>music/Electrodynamix.mp3</file>
+<file>music/Jumper.mp3</file>
+<file>music/let-the-games-begin-21858.mp3</file>
+<file>music/menuLoop.mp3</file>
+<file>music/neon-gaming-128925.mp3</file>
+<file>music/Polargeist.mp3</file>
+<file>music/StereoMadness.mp3</file>
+<file>music/xStep.mp3</file>
+
+
+
+
     <file>img/marker.png</file>
     <file>img/mine.png</file>
     <file>img/mine2.png</file>
