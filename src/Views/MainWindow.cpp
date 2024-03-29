@@ -176,10 +176,12 @@ MainWindow::~MainWindow()
 {
     delete playlist;
     delete music;
-    delete stackedWidget;
     delete mainMenu;
     delete difficultyWindow;
     delete profileList;
+    delete stackedWidget;
+
+
 }
 
 

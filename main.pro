@@ -1,6 +1,7 @@
 QT += widgets multimedia core
 TEMPLATE = app
 TARGET = Demineur
+CONFIG += debug
 SOURCES +=     main.cpp \
     src/Controllers/ProfileManager.cpp \
     src/Models/Demineur.cpp \
