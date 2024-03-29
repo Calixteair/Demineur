@@ -66,10 +66,10 @@ void DemineurView::InitialiserView(int rows , int cols){
     timeElapsed = QTime(0, 0);
    
     QPushButton *saveButton = new QPushButton("Sauvegarder la partie", this);
-    saveButton->setMinimumWidth(200); // Définit une taille fixe pour le bouton
-    saveButton->setMinimumHeight(50); // Définit une taille fixe pour le bouton
-    saveButton->setMaximumWidth(300); // Définit une taille fixe pour le bouton
-    saveButton->setMaximumHeight(50); // Définit une taille fixe pour le bouton
+    saveButton->setMinimumWidth(200);
+    saveButton->setMinimumHeight(50); 
+    saveButton->setMaximumWidth(300); 
+    saveButton->setMaximumHeight(50); 
 
     saveButton->setStyleSheet("QPushButton {"
                            "background-color: #4CAF50;"
@@ -212,7 +212,7 @@ void DemineurView::createGrid(int nbLigne, int nbColonne) {
             buttons.push_back(button);
             connect(button, &QPushButton::clicked, this, [this, j, i] {
 
-                play(j, i); // Jouer lorsque le clic gauche est détecté
+                play(j, i); 
                 counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
 
             });
@@ -400,6 +400,7 @@ void DemineurView::showWin() {
 
     if( time.toString().toStdString().empty() || time > timeElapsed)
     {
+        time = timeElapsed;
 
         // Display a message box indicating the win
     reply = QMessageBox::question(this, "Gagné", QString("Tu as battu ton record: %1").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
