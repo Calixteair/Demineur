@@ -220,12 +220,7 @@ layout->addWidget(widget);
 
 
 
-    // redimensionner la fenetre en plein ecran
-
-    setWindowState(Qt::WindowFullScreen);
-
-    setLayout(layout);
-
+    // aggrandir la fenetre 
 
     
 

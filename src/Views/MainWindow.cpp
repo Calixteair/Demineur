@@ -165,6 +165,7 @@ MainWindow::MainWindow(QWidget *parent)
     music = new QMediaPlayer(this);
     music->setPlaylist(playlist);
     music->play();
+    
 
     // Connexion des signaux et des slots
     QObject::connect(mainMenu, &MainMenu::playClicked, this, &MainWindow::openDifficultyWindow);
