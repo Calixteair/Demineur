@@ -8,7 +8,7 @@
 
 
 LeaderboardView::LeaderboardView(ProfileManager* profileManager, QWidget *parent) 
-    : QWidget(parent), profileManager(profileManager), m_leaderboard(profileManager)
+    : QWidget(parent), m_leaderboard(profileManager), profileManager(profileManager)
 {
     m_layout = new QVBoxLayout(this);
 
