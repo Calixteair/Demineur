@@ -103,7 +103,7 @@ void DemineurView::InitialiserView(int rows, int cols)
                              "color: #333333;"
                              "background-color: #f0f0f0;"
                              "border-radius: 8px;"
-                             "padding: 10px;"
+                             "padding: 5px;"
 
                              "}");
 
@@ -118,8 +118,11 @@ void DemineurView::InitialiserView(int rows, int cols)
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setAlignment(Qt::AlignCenter);
+
+    
     hlayout->addWidget(flagLabel);
     hlayout->addWidget(counterFlag);
+
 
     QWidget *widget = new QWidget();
     widget->setLayout(hlayout);
@@ -127,14 +130,30 @@ void DemineurView::InitialiserView(int rows, int cols)
                           "color: #333333;"
                           "background-color: #f0f0f0;"
                           "border-radius: 8px;"
-                          "padding: 10px;");
+                          "padding: 5px;");
 
-    // mettre la taille de 200
 
-    
+                          QHBoxLayout *hlayoutCenter = new QHBoxLayout();
+    hlayoutCenter->setAlignment(Qt::AlignCenter);
 
-    layout->addWidget(widget);
-    layout->addWidget(timeLabel);
+    hlayoutCenter->addWidget(widget);
+    hlayoutCenter->addWidget(timeLabel);
+
+    layout->addLayout(hlayoutCenter);
+
+
+
+
+    // mettre le widget d'une taille fixe
+
+    widget->setFixedSize(200, 50);
+
+    timeLabel->setFixedSize(200, 50);
+
+    timeLabel->setAlignment(Qt::AlignCenter);
+
+
+  
 
     QPushButton *resetButton = new QPushButton("Recommencer", this);
     resetButton->setMinimumWidth(200);
@@ -143,7 +162,7 @@ void DemineurView::InitialiserView(int rows, int cols)
     resetButton->setMaximumHeight(50);
     resetButton->setStyleSheet("QPushButton {"
                                "background-color: #f44336;"
-                               "padding: 10px 10px;"
+                               "padding: 5px;"
                                "border: none;"
                                "color: white;"
                                "text-align: center;"
