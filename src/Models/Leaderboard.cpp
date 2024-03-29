@@ -1,7 +1,6 @@
 #include "headerFiles/Models/Leaderboard.h"
 #include "headerFiles/Models/Profile.h"
 #include "headerFiles/Controllers/ProfileManager.h"
-#include <QDebug>
 
 #include <algorithm>
 

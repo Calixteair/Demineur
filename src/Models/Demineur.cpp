@@ -27,7 +27,6 @@ Demineur::Demineur(const char *filename)
     if (importeGame(filename) == -1)
     {
         gameState = ERROR;
-        cout << "Erreur lors de l'importation du jeu" << endl;
     }
 }
 
@@ -36,7 +35,6 @@ int Demineur::importeGame(const char *filename)
     ifstream file(filename);
     if (!file.is_open())
     {
-        cout << "Erreur lors de l'ouverture du fichier" << endl;
         return -1;
     }
 
@@ -68,7 +66,6 @@ void Demineur::sauvegarderGame(const char *filename)
     ofstream file(filename);
     if (!file.is_open())
     {
-        cout << "Erreur lors de l'ouverture du fichier" << endl;
         return;
     }
 
@@ -149,22 +146,7 @@ void Demineur::initialiserGrille()
         }
     }
 
-    // // Affichage de la grille
-    // for (int i = 0; i < nbLignes; ++i)
-    // {
-    //     for (int j = 0; j < nbColonnes; ++j)
-    //     {
-    //         if(grille[i][j] == -1)
-    //         {
-    //             cout << "X ";
-    //         }
-    //         else
-    //         {
-    //             cout << grille[i][j] << " ";
-    //         }
-    //     }
-    //     cout << endl;
-    // }
+
 }
 
 

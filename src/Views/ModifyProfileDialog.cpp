@@ -6,7 +6,6 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QFile>
-#include <QDebug>
 #include <QDir>
 
 ModifyProfileDialog::ModifyProfileDialog(QWidget *parent) : QDialog(parent)
@@ -45,8 +44,6 @@ ModifyProfileDialog::ModifyProfileDialog(QWidget *parent) : QDialog(parent)
 void ModifyProfileDialog::handleAvatarButtonClicked()
 {
     QString filePath = QFileDialog::getOpenFileName(this, "Sélectionner un avatar", QString(), "Images (*.png *.jpg *.jpeg)");
-    qDebug() << "juste avant le if";
-    qDebug() << filePath;
     if (!filePath.isEmpty()) {
         avatarLabel->setText(filePath);
     }

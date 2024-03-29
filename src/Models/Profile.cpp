@@ -1,7 +1,6 @@
 #include "headerFiles/Models/Profile.h"
 #include <QFile>
 #include <QDataStream>
-#include <QDebug>
 #include <QTime>
 #include <iostream>
 
@@ -72,8 +71,6 @@ QString Profile::getAvatarPath()
 
 void Profile::setRecord(int index, QTime time) {
     if (index >= 0 && index <= 3) {
-
-        std::cout << "setRecord" << time.toString().toStdString() << std::endl;
 
         m_records[index] = time;
     }

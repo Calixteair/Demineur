@@ -7,7 +7,6 @@
 #include "../headerFiles/Views/DemineurView.h"
 #include "../headerFiles/Views/LeaderboardView.h"
 #include <QStackedWidget>
-#include <QDebug>
 #include <QPushButton>
 #include <QWidget>
 #include <QVBoxLayout>
@@ -36,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     
-    qDebug() << profilesPath;
     QDir().mkpath(profilesPath);
 
     // navbar
@@ -249,7 +247,6 @@ void MainWindow::BackToMainPage()
 
 void MainWindow::openDifficultyWindow()
 {
-    qDebug() << "Ouverture de la fenêtre de sélection de difficulté";
     stackedWidget->setCurrentWidget(difficultyWindow);
     // mettre une music aléatoire
     playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
@@ -257,7 +254,6 @@ void MainWindow::openDifficultyWindow()
 
 void MainWindow::openProfileWindow()
 {
-    qDebug() << "Ouverture de la fenêtre de profil";
     stackedWidget->setCurrentWidget(profileList);
     playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 
@@ -265,28 +261,24 @@ void MainWindow::openProfileWindow()
 
 void MainWindow::openLeaderboardWindow()
 {
-    qDebug() << "Ouverture de la fenêtre de leaderboard";
     stackedWidget->setCurrentWidget(leaderboardView);
     playlist->setCurrentIndex(QRandomGenerator::global()->bounded(playlist->mediaCount()));
 }
 
 void MainWindow::openMainWindow()
 {
-    qDebug() << "Ouverture de la fenêtre de jeu";
     stackedWidget->setCurrentWidget(mainMenu);
     playlist->setCurrentIndex(0); 
 }
 
 void MainWindow::toggleMute()
 {
-    qDebug() << "Mute activé : " << muteAction->isChecked();
     music->setMuted(muteAction->isChecked());
 }
 
 void MainWindow::setVolume(int volume)
 {
     
-    qDebug() << "Volume réglé à " << volume;
     // Ici, implémentez la logique pour régler le volume de la musique de fond
 
     music->setVolume(volume);
@@ -295,7 +287,6 @@ void MainWindow::setVolume(int volume)
 
 void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
 
-    qDebug() << "Fin de la partie" << time.toString() << " " << win << " " << rows << " " << cols << " " << mines ;
 
     profileManager->addGame(rows, cols, mines,time, win);
     

@@ -312,9 +312,11 @@ void DemineurView::updateGrid() {
 
 void DemineurView::ResetGame() {
     demineur->resetGame();
+    
     counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
     timeLabel->setText("00:00:00");
     timeElapsed = QTime(0, 0);
+    timer->stop();
      for(int i = 0; i < demineur->getNbLignes() ; i++) {
         for(int j = 0; j < demineur->getNbColonnes(); j++) {
             QPushButton *button = buttons[i * demineur->getNbColonnes() + j];
@@ -447,9 +449,7 @@ void DemineurView::showWin() {
 
     // verifier si tim est fournis et en suite verifier si le temps est inferieur au temps enregistrer 
     emit endGameRequest(demineur->getNbLignes(), demineur->getNbColonnes(), demineur->getNbMines(), timeElapsed, true);
-            std::cout << "jenvois le signal !!!" << std::endl;
 
-    std::cout << time.toString().toStdString() <<  " ici la" <<  timeElapsed.toString().toStdString() << std::endl;
 
     QMessageBox::StandardButton reply;
 
@@ -474,7 +474,6 @@ void DemineurView::showWin() {
 
          reply = QMessageBox::question(this, "Gagné", QString("Le temps que tu as pris : %1 \nveux-tu rejouer ?").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
-        std::cout << "je suis passe dans resetgame de ShowWin" << std::endl;
         ResetGame();
         
     } else {

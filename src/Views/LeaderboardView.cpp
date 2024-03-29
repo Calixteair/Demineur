@@ -3,7 +3,6 @@
 #include "headerFiles/Controllers/ProfileManager.h"
 #include <QLabel>
 #include <QPushButton>
-#include <QDebug>
 #include <QPixmap>
 
 

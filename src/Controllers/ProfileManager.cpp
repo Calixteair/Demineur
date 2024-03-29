@@ -1,7 +1,6 @@
 #include "headerFiles/Controllers/ProfileManager.h"
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 #include "headerFiles/Models/Profile.h"
 #include <QList>
 #include <QString>
@@ -51,12 +50,8 @@ void ProfileManager::removeProfile(Profile *profile)
     {
         QDir(profilePath).removeRecursively();
         profiles.removeOne(profile);
-        qDebug() << "Profile deleted successfully";
     }
-    else
-    {
-        qDebug() << "Profile does not exist";
-    }
+    
 }
 
 void ProfileManager::updaterecord(Profile *profile, QTime time, int mode)
@@ -92,18 +87,12 @@ void ProfileManager::updaterecord(Profile *profile, QTime time, int mode)
         QJsonDocument doc(profileJson);
         file.write(doc.toJson());
 
-        qDebug() << "Record updated successfully";
     }
-    else
-    {
-        qWarning() << "Impossible d'ouvrir le fichier pour charger les profils : "
-                   << "profiles.dat";
-    }
+
 }
 
 void ProfileManager::changeName(Profile *profile, QString newName)
 {
-    qDebug() << "Changing profile name";
 
     QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
 
@@ -147,9 +136,6 @@ void ProfileManager::changeName(Profile *profile, QString newName)
                            << "profiles.dat";
             }
             // changer le nom de l'avatar
-            qDebug() << "changement du nom de l'avatar";
-            qDebug() << oldAvatarPath;
-            qDebug() << newAvatarPath;
             QFile::rename(oldAvatarPath, newAvatarPath);
         }
         else
@@ -158,11 +144,6 @@ void ProfileManager::changeName(Profile *profile, QString newName)
                        << "profiles.dat";
         }
 
-        qDebug() << "Profile renamed successfully";
-    }
-    else
-    {
-        qDebug() << "Profile does not exist";
     }
 }
 
@@ -170,23 +151,13 @@ void ProfileManager::changeAvatar(Profile *profile, QString newAvatarPath)
 {
     QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
     QString profilePath = profilesPath + "/" + profile->getName();
-    qDebug() << profilePath;
-    qDebug() << profile->getName();
 
     QString newAvatarDest = profilePath + "/avatar_" + profile->getName() + ".png";
-    qDebug() << newAvatarDest;
-
     // remove old avatar
     QFile::remove(newAvatarDest);
 
-    if (QFile::copy(newAvatarPath, newAvatarDest))
-    {
-        qDebug() << "Avatar copied successfully";
-    }
-    else
-    {
-        qDebug() << "Error copying avatar: ";
-    }
+    QFile::copy(newAvatarPath, newAvatarDest);
+  
 }
 
 void ProfileManager::saveProfiles(Profile *profile)
@@ -199,7 +170,6 @@ void ProfileManager::saveProfiles(Profile *profile)
 
     if (QDir(profilePath).exists())
     {
-        qDebug() << "Profile already exists";
         return;
     }
     else
@@ -207,23 +177,15 @@ void ProfileManager::saveProfiles(Profile *profile)
         try
         {
             QDir().mkpath(profilesPath + "/" + profile->getName());
-            qDebug() << "Profile created successfully";
             profilesPath = profilesPath + "/" + profile->getName();
-            qDebug() << profilesPath;
 
             QFile file(profilesPath + "/profiles.json");
 
             QString avatarSrc = profile->getAvatarPath();
             QString avatarDest = profilePath + "/avatar_" + profile->getName() + ".png";
 
-            if (QFile::copy(avatarSrc, avatarDest))
-            {
-                qDebug() << "Avatar copied successfully";
-            }
-            else
-            {
-                qDebug() << "Error copying avatar";
-            }
+            QFile::copy(avatarSrc, avatarDest);
+           
 
             if (file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
@@ -250,15 +212,10 @@ void ProfileManager::saveProfiles(Profile *profile)
                 QJsonDocument doc(profileJson);
                 file.write(doc.toJson());
             }
-            else
-            {
-                qWarning() << "Impossible d'ouvrir le fichier pour sauvegarde des profils : "
-                           << "profiles.dat";
-            }
         }
         catch (const std::exception &e)
         {
-            qDebug() << "Error creating profiles directory: " << e.what();
+            std::cerr << e.what() << '\n';
         }
     
     }
@@ -311,8 +268,6 @@ QList<Profile *> ProfileManager::loadAllProfiles()
             profile->setPartiesGagner(profileJson["partiesGagner"].toInt());
             profile->setPartiesPerdu(profileJson["partiesPerdu"].toInt());
 
-            std::cout << profile->getPartiesJouer() << " " << profile->getPartiesGagner() << " " << profile->getPartiesPerdu() << std::endl;
-
 
             QString avatarPath = profilePath + "/avatar_" + profileFolder + ".png";
             profile->setAvatarPath(avatarPath);
@@ -346,7 +301,6 @@ void ProfileManager::addGame(int col, int row, int mines, QTime time, bool win)
             QTime currentRecord = curentProfile->getRecord(0);
             if (currentRecord.toString().toStdString().empty()  || time < currentRecord)
             {
-                 std::cout << "Addgame" << time.toString().toStdString() << std::endl;
 
                 curentProfile->setRecord(0, time);
             }

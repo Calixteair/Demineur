@@ -3,7 +3,6 @@
 #include "../headerFiles/Views/ProfileList.h"
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QDebug>
 #include <QLabel>
 #include <QPixmap>
 #include <QWidget>
@@ -47,20 +46,17 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 void MainMenu::onPlayButtonClicked()
 {
     // Implémentez votre fonctionnalité lorsque le bouton "Jouer en solo" est cliqué
-    qDebug() << "Ouverture de la fenêtre de sélection de difficulté";
     emit playClicked();
 }
 
 void MainMenu::onProfileButtonClicked()
 {
     // Implémentez votre fonctionnalité lorsque le bouton "Profil" est cliqué
-    qDebug() << "Ouverture de la fenêtre de profil";
     emit profileClicked();
 }
 
 void MainMenu::onLeaderboardButtonClicked()
 {
     // Implémentez votre fonctionnalité lorsque le bouton "Leaderboard" est cliqué
-    qDebug() << "Ouverture du leaderboard";
     emit leaderboardClicked();
 }

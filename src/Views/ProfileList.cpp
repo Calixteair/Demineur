@@ -10,7 +10,6 @@
 #include <QListWidget>
 #include <QPushButton>
 #include <QList>
-#include <QDebug>
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QDialog>
@@ -113,7 +112,6 @@ void ProfileList::loadProfiles()
     // Effacer les éléments de la QListWidget
     profileListView->clear();
 
-    qDebug() << "Loaded profiles: " << loadedProfiles.size();
     for (Profile* profile : loadedProfiles) {
         addProfile(profile);
     }
@@ -123,8 +121,6 @@ void ProfileList::addProfile(Profile *profile)
 {
     profiles.append(profile);
 
-    qDebug() << profile->getName();
-    qDebug() << profile->getAvatarPath();
 
     // Créer une nouvelle QListWidgetItem
     QListWidgetItem *item = new QListWidgetItem(profileListView);
@@ -190,7 +186,6 @@ Profile* ProfileList::getSelectedProfile()
 
 void ProfileList::handleProfileItemClicked()
 {
-    qDebug() << "Profile item clicked";
     Profile *selectedProfile = getSelectedProfile();
     if (selectedProfile) {
         emit profileSelected(selectedProfile);
@@ -209,7 +204,6 @@ void ProfileList::handleAddProfileClicked()
     if (avatarPath.isEmpty()) {
         return;
     }
-    qDebug() << "Avatar path: " << avatarPath;
 
     QPixmap avatar(avatarPath);
     if (avatar.isNull()) {
@@ -232,12 +226,10 @@ void ProfileList::handleDeleteProfileClicked()
 
 void ProfileList::handlePlayButtonClicked()
 {
-    qDebug() << "Play button clicked";
     if (profileManager->profileSelected)
     {
         // Lancer le jeu avec le profil sélectionné
         
-        qDebug() << "Selected profile: " << profileManager->curentProfile->getName();
         emit playClicked();
     }
     else
@@ -271,12 +263,10 @@ void ProfileList::handleModifyProfileButtonClicked(){
 }
 
 void ProfileList::handleInfoButtonClicked(){
-    qDebug() << "Info button clicked";
     if (profileManager->profileSelected)
     {
         // Lancer le jeu avec le profil sélectionné
         
-        qDebug() << "Selected profile: " << profileManager->curentProfile->getName();
         infoDialog = new InfoDialog(profileManager->curentProfile);
         infoDialog->exec();
     }
@@ -290,15 +280,9 @@ void ProfileList::handleInfoButtonClicked(){
 void ProfileList::modifyProfile(const QString &name, const QString &avatarPath)
 {
     // Mettre à jour le profil sélectionné avec les nouvelles données
-    qDebug() << "Modifying profile";
-    qDebug() << "Name: " << name;
-    qDebug() << "Avatar path: " << avatarPath;
 
         if (!name.isEmpty()) {
         
-            qDebug() << "Name: " << name;
-            qDebug() << profileManager->curentProfile->getName();
-            
 
             
             if(profileManager->curentProfile->getName() != name){
@@ -308,7 +292,6 @@ void ProfileList::modifyProfile(const QString &name, const QString &avatarPath)
         }
 
         if(!avatarPath.isEmpty()){
-            qDebug() << "Avatar path: " << avatarPath;
             profileManager->changeAvatar(profileManager->curentProfile, avatarPath);
 
         }

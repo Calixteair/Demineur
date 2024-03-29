@@ -9,7 +9,6 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QDir>
-#include <QDebug>
 #include <QLineEdit>
 #include <QIntValidator>
 #include <QDialogButtonBox>
@@ -187,13 +186,11 @@ void DifficultyWindow::launchDemineurView(int rows, int cols, int mines)
     // Émettre le signal pour demander l'affichage de la vue du démineur
     
     emit demineurViewRequested(rows, cols, mines);    
-    qDebug() << "Lancement de la vue du démineur";
 }
 
 void DifficultyWindow::loadGame(QString filePath)
 {
     // Implémentez la logique pour charger une partie sauvegardée
-    qDebug() << "Chargement de la partie à partir de: " << filePath;
 
     emit demineurViewRequestedWithFile(filePath);
 
