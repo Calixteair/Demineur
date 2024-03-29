@@ -7,6 +7,7 @@
 #include "../headerFiles/Views/DemineurView.h"
 #include "../headerFiles/Views/LeaderboardView.h"
 #include <QStackedWidget>
+
 #include <QPushButton>
 #include <QWidget>
 #include <QVBoxLayout>
@@ -31,10 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu = new MainMenu(this);
 
     QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
-
-
-
-    
     QDir().mkpath(profilesPath);
 
     // navbar
@@ -163,7 +160,6 @@ MainWindow::MainWindow(QWidget *parent)
     music = new QMediaPlayer(this);
     music->setPlaylist(playlist);
     music->play();
-    
 
     // Connexion des signaux et des slots
     QObject::connect(mainMenu, &MainMenu::playClicked, this, &MainWindow::openDifficultyWindow);
@@ -278,22 +274,13 @@ void MainWindow::toggleMute()
 
 void MainWindow::setVolume(int volume)
 {
-    
-    // Ici, implémentez la logique pour régler le volume de la musique de fond
-
     music->setVolume(volume);
 
 }
 
 void MainWindow::endGame(int rows , int cols, int mines, QTime time, bool win){
-
-
     profileManager->addGame(rows, cols, mines,time, win);
     
-
-
-
-
 }
 
 
