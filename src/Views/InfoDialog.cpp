@@ -6,69 +6,56 @@
 InfoDialog::InfoDialog(Profile *profile, QWidget *parent)
     : QDialog(parent), m_profile(profile)
 {
+    // Création du layout vertical
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter); // Centrage du layout
 
-    // Créer les labels pour afficher les informations du profil
+    // Création et ajout des labels pour afficher les informations du profil
     m_nameLabel = new QLabel("Name: " + m_profile->getName(), this);
+    m_nameLabel->setStyleSheet("font-weight: bold;"); // Police en gras
     layout->addWidget(m_nameLabel);
 
     m_avatarLabel = new QLabel(this);
-    m_avatarLabel->setPixmap(QPixmap(m_profile->getAvatarPath())); // Assurez-vous que le chemin de l'avatar est correct
+    m_avatarLabel->setPixmap(QPixmap(m_profile->getAvatarPath())); // Chemin de l'avatar
+    m_avatarLabel->setAlignment(Qt::AlignCenter); // Centrage de l'avatar
     layout->addWidget(m_avatarLabel);
 
+    // Records
+    QString recordStyle = "color: #007bff;"; // Couleur bleue pour les enregistrements
+    addRecordLabel(layout, "Record Easy: ", m_profile->getRecord(0).toString(), recordStyle);
+    addRecordLabel(layout, "Record Medium: ", m_profile->getRecord(1).toString(), recordStyle);
+    addRecordLabel(layout, "Record Hard: ", m_profile->getRecord(2).toString(), recordStyle);
+    addRecordLabel(layout, "Record Custom: ", m_profile->getRecord(3).toString(), recordStyle);
 
-// recuperer les QTime de record verifier si il sont valide sinon  mettre "pas de record"
-    QTime record1 = m_profile->getRecord(0);
-    QTime record2 = m_profile->getRecord(1);
-    QTime record3 = m_profile->getRecord(2);
-    QTime record4 = m_profile->getRecord(3);
+    // Statistiques de jeux
+    QString gamesStyle = "color: #28a745;"; // Couleur verte pour les statistiques de jeux
+    addStatLabel(layout, "Games Played: ", QString::number(m_profile->getPartiesJouer()), gamesStyle);
+    addStatLabel(layout, "Games Won: ", QString::number(m_profile->getPartiesGagner()), gamesStyle);
+    addStatLabel(layout, "Games Lost: ", QString::number(m_profile->getPartiesPerdu()), gamesStyle);
 
-    if (record1 == QTime(0, 0, -1)) {
-        m_recordLabel1 = new QLabel("Record Easy: Pas de record", this);
-    } else {
-        m_recordLabel1 = new QLabel("Record Easy: " + record1.toString(), this);
-    }
-    layout->addWidget(m_recordLabel1);
+    // Taux de victoire
+    double winRate = (m_profile->getPartiesJouer() != 0) ? (static_cast<double>(m_profile->getPartiesGagner()) / m_profile->getPartiesJouer() * 100) : 0;
+    QString winRateStyle = (winRate >= 50) ? "color: #28a745;" : "color: #dc3545;"; // Vert si >= 50%, sinon rouge
+    addStatLabel(layout, "Win Rate: ", QString::number(winRate, 'f', 2) + "%", winRateStyle);
 
-    if (record2 == QTime(0, 0, -1)) {
-        m_recordLabel2 = new QLabel("Record Medium: Pas de record", this);
-    } else {
-        m_recordLabel2 = new QLabel("Record Medium: " + record2.toString(), this);
-    }
-    layout->addWidget(m_recordLabel2);
-
-    if (record3 == QTime(0, 0, -1)) {
-        m_recordLabel3 = new QLabel("Record Hard: Pas de record", this);
-    } else {
-        m_recordLabel3 = new QLabel("Record Hard: " + record3.toString(), this);
-    }
-    layout->addWidget(m_recordLabel3);
-
-    if (record4 == QTime(0, 0, -1)) {
-        m_recordLabel4 = new QLabel("Record Custom: Pas de record", this);
-    } else {
-        m_recordLabel4 = new QLabel("Record Custom: " + record4.toString(), this);
-    }
-    layout->addWidget(m_recordLabel4);
-
-    m_gamesPlayedLabel = new QLabel("Games Played: " + QString::number(m_profile->getPartiesJouer()), this);
-    layout->addWidget(m_gamesPlayedLabel);
-
-    m_gamesWonLabel = new QLabel("Games Won: " + QString::number(m_profile->getPartiesGagner()), this);
-    layout->addWidget(m_gamesWonLabel);
-
-    m_gamesLostLabel = new QLabel("Games Lost: " + QString::number(m_profile->getPartiesPerdu()), this);
-    layout->addWidget(m_gamesLostLabel);
-
-    //winrate par le calcul des games won et games played
-    double winRate = 0;
-    if (m_profile->getPartiesJouer() != 0) {
-        winRate = (double)m_profile->getPartiesGagner() / m_profile->getPartiesJouer() * 100;
-    }
-    m_winRateLabel = new QLabel("Win Rate: " + QString::number(winRate) + "%", this);
-    layout->addWidget(m_winRateLabel);
-
+    // Définition du titre de la fenêtre
     setWindowTitle("Profile Information");
+}
+
+// Fonction pour ajouter un label d'enregistrement
+void InfoDialog::addRecordLabel(QVBoxLayout *layout, const QString &text, const QString &value, const QString &style)
+{
+    QLabel *recordLabel = new QLabel(text + (value.isEmpty() ? "N/A" : value), this);
+    recordLabel->setStyleSheet(style);
+    layout->addWidget(recordLabel);
+}
+
+// Fonction pour ajouter un label de statistique
+void InfoDialog::addStatLabel(QVBoxLayout *layout, const QString &text, const QString &value, const QString &style)
+{
+    QLabel *statLabel = new QLabel(text + value, this);
+    statLabel->setStyleSheet(style);
+    layout->addWidget(statLabel);
 }
 
 InfoDialog::~InfoDialog()

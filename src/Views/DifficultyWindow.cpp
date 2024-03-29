@@ -37,7 +37,7 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
                           "}";
 
     QString buttonStyleMedium = "QPushButton {"
-                            "background-color: #008CBA;"
+                            "background-color: #FFA500;"
                             "border: none;"
                             "color: white;"
                             "padding: 10px 24px;"
@@ -48,7 +48,7 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
                             "border-radius: 8px;"
                             "}"
                             "QPushButton:hover {"
-                            "background-color: #0077A3;"
+                            "background-color: #FF8C00;"
                             "color: white;"
                             "}";
 
@@ -69,23 +69,6 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
                             "}";
 
     QString buttonStyleCustom = "QPushButton {"
-                            "background-color: #FFA500;"
-                            "border: none;"
-                            "color: white;"
-                            "padding: 10px 24px;"
-                            "text-align: center;"
-                            "text-decoration: none;"
-                            "font-size: 16px;"
-                            "margin: 4px 2px;"
-                            "border-radius: 8px;"
-                            "}"
-                            "QPushButton:hover {"
-                            "background-color: #FF8C00;"
-                            "color: white;"
-                            "}";
-
-    QString buttonStyle = "QPushButton {"
-
                             "background-color: #008CBA;"
                             "border: none;"
                             "color: white;"
@@ -98,6 +81,23 @@ DifficultyWindow::DifficultyWindow(QWidget *parent) : QWidget(parent)
                             "}"
                             "QPushButton:hover {"
                             "background-color: #0077A3;"
+                            "color: white;"
+                            "}";
+
+    QString buttonStyle = "QPushButton {"
+
+                            "background-color: #ba00b1;"
+                            "border: none;"
+                            "color: white;"
+                            "padding: 10px 24px;"
+                            "text-align: center;"
+                            "text-decoration: none;"
+                            "font-size: 16px;"
+                            "margin: 4px 2px;"
+                            "border-radius: 8px;"
+                            "}"
+                            "QPushButton:hover {"
+                            "background-color: #8f1389;"
                             "color: white;"
                             "}";
 

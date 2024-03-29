@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QVBoxLayout>
 #include "headerFiles/Models/Profile.h"
 
 class InfoDialog : public QDialog
@@ -11,6 +12,8 @@ class InfoDialog : public QDialog
 
 public:
     InfoDialog(Profile *profile, QWidget *parent = nullptr);
+    void addRecordLabel(QVBoxLayout *layout, const QString &text, const QString &value, const QString &style);
+    void addStatLabel(QVBoxLayout *layout, const QString &text, const QString &value, const QString &style);
     ~InfoDialog();
 
 private:
