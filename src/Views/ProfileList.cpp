@@ -69,25 +69,34 @@ ProfileList::ProfileList(ProfileManager* profileManager, QWidget *parent) : QWid
     
     QHBoxLayout *bottomRightLayout = new QHBoxLayout;
     playButton = new QPushButton("Jouer", this);
+    infoProfile = new QPushButton("Info profile", this);
+
+    QHBoxLayout *bottomRightLayout2 = new QHBoxLayout;
+
     modifyProfileButton = new QPushButton("Modifier le profil", this);
+
  
     playButton->setStyleSheet(buttonStylePlay);
     deleteButton->setStyleSheet(buttonStyle);
     addButton->setStyleSheet(buttonStyle);
     modifyProfileButton->setStyleSheet(buttonStyle);
+    infoProfile->setStyleSheet(buttonStyle);
 
     bottomLeftLayout->addWidget(addButton);
     bottomLeftLayout->addWidget(deleteButton);
     bottomRightLayout->addWidget(modifyProfileButton);
-    bottomRightLayout->addWidget(playButton);
+    bottomRightLayout->addWidget(infoProfile);
+    bottomRightLayout2->addWidget(playButton);
 
     layout->addLayout(bottomLeftLayout);
     layout->addLayout(bottomRightLayout);
+    layout->addLayout(bottomRightLayout2);
 
     connect(deleteButton, &QPushButton::clicked, this, &ProfileList::handleDeleteProfileClicked);
     connect(addButton, &QPushButton::clicked, this, &ProfileList::handleAddProfileClicked);
     QObject::connect(playButton, &QPushButton::clicked, this, &ProfileList::handlePlayButtonClicked);
     QObject::connect(modifyProfileButton, &QPushButton::clicked, this, &ProfileList::handleModifyProfileButtonClicked);
+    QObject::connect(infoProfile, &QPushButton::clicked, this, &ProfileList::handleInfoButtonClicked);
     QObject::connect(dialog, &ModifyProfileDialog::profileModified, this, &ProfileList::modifyProfile);
 
     profiles = profileManager->getProfiles();    
@@ -250,9 +259,11 @@ void ProfileList::updatePlayButtonState()
     if (profileManager->profileSelected) {
         playButton->setEnabled(true);
         modifyProfileButton->setEnabled(true);
+        infoProfile->setEnabled(true);
     } else {
         playButton->setEnabled(false);
         modifyProfileButton->setEnabled(false);
+        infoProfile->setEnabled(false);
     }
 }
 
@@ -264,6 +275,22 @@ void ProfileList::handleModifyProfileButtonClicked(){
 
     // Afficher le dialogue de modification du profil
     dialog->exec();
+}
+
+void ProfileList::handleInfoButtonClicked(){
+    qDebug() << "Info button clicked";
+    if (profileManager->profileSelected)
+    {
+        // Lancer le jeu avec le profil sélectionné
+        
+        qDebug() << "Selected profile: " << profileManager->curentProfile->getName();
+        infoDialog = new InfoDialog(profileManager->curentProfile);
+        infoDialog->exec();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "No profile selected.");
+    }
 }
 
 

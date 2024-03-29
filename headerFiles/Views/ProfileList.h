@@ -8,6 +8,7 @@
 #include <QLabel>
 
 #include "headerFiles/Views/ModifyProfileDialog.h"
+#include "headerFiles/Views/InfoDialog.h"
 
 #include "headerFiles/Models/Profile.h"
 #include "headerFiles/Controllers/ProfileManager.h"
@@ -29,6 +30,7 @@ private slots:
     void handleProfileItemClicked();
     void handleAddProfileClicked();
     void handleDeleteProfileClicked();
+    void handleInfoButtonClicked();
     void addProfile(Profile *profile);
     void handlePlayButtonClicked();
     void deleteSelectedProfile();
@@ -44,10 +46,12 @@ private:
     QPushButton *deleteButton;
     QPushButton *playButton;
     QPushButton *modifyProfileButton;
+    QPushButton *infoProfile;
     QLabel *avatarLabel;
     ProfileManager* profileManager;
     QList<Profile*> profiles;
     ModifyProfileDialog *dialog;
+    InfoDialog *infoDialog;
 };
 
 #endif // PROFILELIST_H
