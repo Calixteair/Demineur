@@ -24,30 +24,30 @@ InfoDialog::InfoDialog(Profile *profile, QWidget *parent)
     QTime record4 = m_profile->getRecord(3);
 
     if (record1 == QTime(0, 0, -1)) {
-        m_recordLabel1 = new QLabel("Record: Pas de record", this);
+        m_recordLabel1 = new QLabel("Record Easy: Pas de record", this);
     } else {
-        m_recordLabel1 = new QLabel("Record: " + record1.toString(), this);
+        m_recordLabel1 = new QLabel("Record Easy: " + record1.toString(), this);
     }
     layout->addWidget(m_recordLabel1);
 
     if (record2 == QTime(0, 0, -1)) {
-        m_recordLabel2 = new QLabel("Record: Pas de record", this);
+        m_recordLabel2 = new QLabel("Record Medium: Pas de record", this);
     } else {
-        m_recordLabel2 = new QLabel("Record: " + record2.toString(), this);
+        m_recordLabel2 = new QLabel("Record Medium: " + record2.toString(), this);
     }
     layout->addWidget(m_recordLabel2);
 
     if (record3 == QTime(0, 0, -1)) {
-        m_recordLabel3 = new QLabel("Record: Pas de record", this);
+        m_recordLabel3 = new QLabel("Record Hard: Pas de record", this);
     } else {
-        m_recordLabel3 = new QLabel("Record: " + record3.toString(), this);
+        m_recordLabel3 = new QLabel("Record Hard: " + record3.toString(), this);
     }
     layout->addWidget(m_recordLabel3);
 
     if (record4 == QTime(0, 0, -1)) {
-        m_recordLabel4 = new QLabel("Record: Pas de record", this);
+        m_recordLabel4 = new QLabel("Record Custom: Pas de record", this);
     } else {
-        m_recordLabel4 = new QLabel("Record: " + record4.toString(), this);
+        m_recordLabel4 = new QLabel("Record Custom: " + record4.toString(), this);
     }
     layout->addWidget(m_recordLabel4);
 

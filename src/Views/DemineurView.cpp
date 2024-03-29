@@ -107,22 +107,80 @@ void DemineurView::InitialiserView(int rows , int cols){
                          "font-size: 24px;"
                          "color: #333333;"
                          "background-color: #f0f0f0;"
+                         "border-radius: 8px;"
+                        "padding: 10px;"
+
                          "}");
-                         
-    counterFlag = new QLabel(this);
+    
+QPixmap originalMarkerPng(":/img/marker.png");
+QPixmap markerPng = originalMarkerPng.scaled(25, 25, Qt::KeepAspectRatio);
+
+QLabel *flagLabel = new QLabel(this);
+flagLabel->setPixmap(markerPng);
+
+counterFlag = new QLabel(this);
 counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
-counterFlag->setStyleSheet("QLabel {"
-                           "font-size: 24px;"
-                           "color: #333333;"
-                            "background-color: #f0f0f0;"
+
+QHBoxLayout *hlayout = new QHBoxLayout(this);
+
+QHBoxLayout *hlayout2 = new QHBoxLayout();
+
+hlayout2->setSpacing(0);
+hlayout2->setAlignment(Qt::AlignCenter);
+
+hlayout->setAlignment(Qt::AlignCenter);
+hlayout2->addWidget(flagLabel);
+hlayout2->addWidget(counterFlag);
+
+QWidget *widget2 = new QWidget();
+widget2->setLayout(hlayout2);
+widget2->setStyleSheet("font-size: 24px;"
+                         "color: #333333;"
+                         "background-color: #f0f0f0;"
+                         "border-radius: 8px;"
+                        "padding: 10px;");
+
+hlayout->addWidget(widget2);
+hlayout->addWidget(timeLabel);
+
+QWidget *widget = new QWidget();
+widget->setLayout(hlayout);
+layout->addWidget(widget);
+
+
+    QPushButton *resetButton = new QPushButton("Recommencer", this);
+    resetButton->setMinimumWidth(200);
+    resetButton->setMinimumHeight(50);
+    resetButton->setMaximumWidth(300);
+    resetButton->setMaximumHeight(50);
+    resetButton->setStyleSheet("QPushButton {"
+                           "background-color: #f44336;"
+                           "padding: 10px 10px;"
+                           "border: none;"
+                           "color: white;"
+                           "text-align: center;"
+                           "text-decoration: none;"
+                           "font-size: 16px;"
+                           "margin: 4px 2px;"
+                           "border-radius: 8px;"
+                           "}"
+                           "QPushButton:hover {"
+                           "background-color: #d32f2f;"
+                           "color: white;"
                            "}");
 
+    connect(resetButton, &QPushButton::clicked, this, &DemineurView::ResetGame);
+    
+    QHBoxLayout *hlayoutButton = new QHBoxLayout(this);
 
-    layout->addWidget(counterFlag);
+    hlayoutButton->setAlignment(Qt::AlignCenter);
 
-    layout->addWidget(timeLabel);
+    hlayoutButton->addWidget(saveButton);
+    hlayoutButton->addWidget(resetButton);
 
-      layout->addWidget(saveButton);   
+    QWidget *widgetButton = new QWidget();
+    widgetButton->setLayout(hlayoutButton);
+    layout->addWidget(widgetButton);
 
     QScrollArea *scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
@@ -142,11 +200,10 @@ counterFlag->setStyleSheet("QLabel {"
 
 
 
-    //Verifier si la grille est plus grande que la taille de la fenêtre
-    if (rows * 50 > 1080 || cols * 50 > 1920) {
-        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    }
+
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
    
 
 
@@ -154,6 +211,11 @@ counterFlag->setStyleSheet("QLabel {"
     int gridSizeX = cols * 50; // 50 pixels par bouton
     int gridSizeY = rows * 50; // 50 pixels par bouton
     scrollWidget->setFixedSize(gridSizeX, gridSizeY);
+
+
+    scrollArea->setAlignment(Qt::AlignCenter);
+
+
 
 
 
