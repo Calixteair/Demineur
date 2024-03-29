@@ -57,96 +57,84 @@ void DemineurView::setTime(QTime time) {
     time = time;
 }
 
-
-
-void DemineurView::InitialiserView(int rows , int cols){
+void DemineurView::InitialiserView(int rows, int cols)
+{
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &DemineurView::updateTime);
     timeElapsed = QTime(0, 0);
-   
+
     QPushButton *saveButton = new QPushButton("Sauvegarder la partie", this);
     saveButton->setMinimumWidth(200);
-    saveButton->setMinimumHeight(50); 
-    saveButton->setMaximumWidth(300); 
-    saveButton->setMaximumHeight(50); 
+    saveButton->setMinimumHeight(50);
+    saveButton->setMaximumWidth(300);
+    saveButton->setMaximumHeight(50);
 
     saveButton->setStyleSheet("QPushButton {"
-                           "background-color: #4CAF50;"
-                           "padding: 10px 10px;"
-                           "border: none;"
-                           "color: white;"
-                           "text-align: center;"
-                           "text-decoration: none;"
-                           "font-size: 16px;"
-                           "margin: 4px 2px;"
-                           "border-radius: 8px;"
-                           "}"
-                           "QPushButton:hover {"
-                           "background-color: #45a049;"
-                           "color: white;"
-                           "}");
+                              "background-color: #4CAF50;"
+                              "padding: 10px 10px;"
+                              "border: none;"
+                              "color: white;"
+                              "text-align: center;"
+                              "text-decoration: none;"
+                              "font-size: 16px;"
+                              "margin: 4px 2px;"
+                              "border-radius: 8px;"
+                              "}"
+                              "QPushButton:hover {"
+                              "background-color: #45a049;"
+                              "color: white;"
+                              "}");
 
-    connect(saveButton, &QPushButton::clicked, this, [=]() {
-        QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder la partie", QDir::homePath(), "Fichiers de sauvegarde (*.sav)");
-        if (!fileName.isEmpty()) {
-            demineur->sauvegarderGame(fileName.toStdString().c_str());
-        }
-    });
+    connect(saveButton, &QPushButton::clicked, this, [=]()
+            {
+    QString fileName = QFileDialog::getSaveFileName(this, "Sauvegarder la partie", QDir::homePath(), "Fichiers de sauvegarde (*.sav)");
+    if (!fileName.isEmpty()) {
+        demineur->sauvegarderGame(fileName.toStdString().c_str());
+    } });
 
-      QVBoxLayout *layout = new QVBoxLayout(this);
-
-          layout->setAlignment(Qt::AlignCenter);
-
-
-
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setAlignment(Qt::AlignCenter);
 
     timeLabel = new QLabel(this);
     timeLabel->setText("00:00:00");
     timeLabel->setStyleSheet("QLabel {"
-                         "font-size: 24px;"
-                         "color: #333333;"
-                         "background-color: #f0f0f0;"
-                         "border-radius: 8px;"
-                        "padding: 10px;"
+                             "font-size: 24px;"
+                             "color: #333333;"
+                             "background-color: #f0f0f0;"
+                             "border-radius: 8px;"
+                             "padding: 10px;"
 
-                         "}");
+                             "}");
+
+    QPixmap originalMarkerPng(":/img/marker.png");
+    QPixmap markerPng = originalMarkerPng.scaled(25, 25, Qt::KeepAspectRatio);
+
+    QLabel *flagLabel = new QLabel(this);
+    flagLabel->setPixmap(markerPng);
+
+    counterFlag = new QLabel(this);
+    counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
+
+    QHBoxLayout *hlayout = new QHBoxLayout();
+    hlayout->setAlignment(Qt::AlignCenter);
+    hlayout->addWidget(flagLabel);
+    hlayout->addWidget(counterFlag);
+
+    QWidget *widget = new QWidget();
+    widget->setLayout(hlayout);
+    widget->setStyleSheet("font-size: 24px;"
+                          "color: #333333;"
+                          "background-color: #f0f0f0;"
+                          "border-radius: 8px;"
+                          "padding: 10px;");
+
+    // mettre la taille de 200
+
     
-QPixmap originalMarkerPng(":/img/marker.png");
-QPixmap markerPng = originalMarkerPng.scaled(25, 25, Qt::KeepAspectRatio);
 
-QLabel *flagLabel = new QLabel(this);
-flagLabel->setPixmap(markerPng);
-
-counterFlag = new QLabel(this);
-counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
-
-QHBoxLayout *hlayout = new QHBoxLayout(this);
-
-QHBoxLayout *hlayout2 = new QHBoxLayout();
-
-hlayout2->setSpacing(0);
-hlayout2->setAlignment(Qt::AlignCenter);
-
-hlayout->setAlignment(Qt::AlignCenter);
-hlayout2->addWidget(flagLabel);
-hlayout2->addWidget(counterFlag);
-
-QWidget *widget2 = new QWidget();
-widget2->setLayout(hlayout2);
-widget2->setStyleSheet("font-size: 24px;"
-                         "color: #333333;"
-                         "background-color: #f0f0f0;"
-                         "border-radius: 8px;"
-                        "padding: 10px;");
-
-hlayout->addWidget(widget2);
-hlayout->addWidget(timeLabel);
-
-QWidget *widget = new QWidget();
-widget->setLayout(hlayout);
-layout->addWidget(widget);
-
+    layout->addWidget(widget);
+    layout->addWidget(timeLabel);
 
     QPushButton *resetButton = new QPushButton("Recommencer", this);
     resetButton->setMinimumWidth(200);
@@ -154,27 +142,25 @@ layout->addWidget(widget);
     resetButton->setMaximumWidth(300);
     resetButton->setMaximumHeight(50);
     resetButton->setStyleSheet("QPushButton {"
-                           "background-color: #f44336;"
-                           "padding: 10px 10px;"
-                           "border: none;"
-                           "color: white;"
-                           "text-align: center;"
-                           "text-decoration: none;"
-                           "font-size: 16px;"
-                           "margin: 4px 2px;"
-                           "border-radius: 8px;"
-                           "}"
-                           "QPushButton:hover {"
-                           "background-color: #d32f2f;"
-                           "color: white;"
-                           "}");
+                               "background-color: #f44336;"
+                               "padding: 10px 10px;"
+                               "border: none;"
+                               "color: white;"
+                               "text-align: center;"
+                               "text-decoration: none;"
+                               "font-size: 16px;"
+                               "margin: 4px 2px;"
+                               "border-radius: 8px;"
+                               "}"
+                               "QPushButton:hover {"
+                               "background-color: #d32f2f;"
+                               "color: white;"
+                               "}");
 
     connect(resetButton, &QPushButton::clicked, this, &DemineurView::ResetGame);
-    
-    QHBoxLayout *hlayoutButton = new QHBoxLayout(this);
 
+    QHBoxLayout *hlayoutButton = new QHBoxLayout();
     hlayoutButton->setAlignment(Qt::AlignCenter);
-
     hlayoutButton->addWidget(saveButton);
     hlayoutButton->addWidget(resetButton);
 
@@ -184,95 +170,66 @@ layout->addWidget(widget);
 
     QScrollArea *scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
-    
-
 
     QWidget *scrollWidget = new QWidget;
     gridLayout = new QGridLayout(scrollWidget);
     scrollWidget->setLayout(gridLayout);
 
+    int gridSizeX = cols * 50;
+    int gridSizeY = rows * 50; 
+    scrollWidget->setFixedSize(gridSizeX, gridSizeY);
+
     scrollArea->setWidget(scrollWidget);
 
-    
     layout->addWidget(scrollArea);
-
-
-
-
-
 
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-   
-
-
-    // Définir une taille fixe pour la grille en fonction du nombre de lignes et de colonnes
-    int gridSizeX = cols * 50; // 50 pixels par bouton
-    int gridSizeY = rows * 50; // 50 pixels par bouton
-    scrollWidget->setFixedSize(gridSizeX, gridSizeY);
-
-
     scrollArea->setAlignment(Qt::AlignCenter);
 
-
-
-
-
-
-    // aggrandir la fenetre 
-
-    
-
-
-
-
-
     createGrid(rows, cols);
-
-
-
-
-
 }
 
-
-void DemineurView::updateTime() {
+void DemineurView::updateTime()
+{
     timeElapsed = timeElapsed.addSecs(1); // Ajouter une seconde au temps écoulé
 
     QString timeString = timeElapsed.toString("hh:mm:ss");
     timeLabel->setText(timeString);
 }
 
-void DemineurView::createGrid(int nbLigne, int nbColonne) {
-    for(int i = 0; i < nbLigne; i++) {
-        for(int j = 0; j < nbColonne; j++) {
+void DemineurView::createGrid(int nbLigne, int nbColonne)
+{
+    for (int i = 0; i < nbLigne; i++)
+    {
+        for (int j = 0; j < nbColonne; j++)
+        {
             QPushButton *button = new QPushButton;
             button->setFixedSize(50, 50);
             button->setStyleSheet("QPushButton {"
-                                   "background-color: #bdbdbd;"
-                                   "border-style: outset;"
-                                   "border-width: 1px;"
-                                   "border-radius: 0px;"
-                                   "border-color: beige;"
-                                   "font: bold 14px;"
-                                   "padding: 6px;"
-                                   "}"
-                                   "QPushButton:hover {"
-                                   "background-color: #969595;"
-                                   "}"
-                                   "QPushButton:pressed {"
-                                   "background-color: #807e7e;"
-                                   "}");
+                                  "background-color: #bdbdbd;"
+                                  "border-style: outset;"
+                                  "border-width: 1px;"
+                                  "border-radius: 0px;"
+                                  "border-color: beige;"
+                                  "font: bold 14px;"
+                                  "padding: 6px;"
+                                  "}"
+                                  "QPushButton:hover {"
+                                  "background-color: #969595;"
+                                  "}"
+                                  "QPushButton:pressed {"
+                                  "background-color: #807e7e;"
+                                  "}");
 
             gridLayout->addWidget(button, i, j);
             buttons.push_back(button);
-            connect(button, &QPushButton::clicked, this, [this, j, i] {
-
-                play(j, i); 
-                counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
-
-            });
+            connect(button, &QPushButton::clicked, this, [this, j, i]
+                    {
+                        play(j, i);
+                        counterFlag->setText(QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines()));
+                    });
         }
     }
 }
@@ -312,8 +269,9 @@ void DemineurView::updateGrid() {
 
 void DemineurView::ResetGame() {
     demineur->resetGame();
+
     
-    counterFlag->setText( QString::number(demineur->getNbFlag()) + "/" + QString::number(demineur->getNbMines())) ;
+    counterFlag->setText( "0/" + QString::number(demineur->getNbMines())) ;
     timeLabel->setText("00:00:00");
     timeElapsed = QTime(0, 0);
     timer->stop();
@@ -343,6 +301,7 @@ void DemineurView::ResetGame() {
 
         }
         }
+
     
 }
 
@@ -460,7 +419,7 @@ void DemineurView::showWin() {
         time = timeElapsed;
 
         // Display a message box indicating the win
-    reply = QMessageBox::question(this, "Gagné", QString("Tu as battu ton record: %1").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this, "Gagné", QString("Tu as battu ton record: %1 \n veux-tu rejouer ?").arg(timeElapsed.toString("hh:mm:ss")), QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ResetGame();
         

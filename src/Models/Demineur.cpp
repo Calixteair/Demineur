@@ -343,6 +343,7 @@ void Demineur::afficherGrille()
 void Demineur::resetGame()
 {
     gameState = INIT;
+    drapeau=0;
     initialiserGrille();
 }
 
