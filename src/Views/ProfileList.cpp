@@ -140,9 +140,17 @@ void ProfileList::addProfile(Profile *profile)
     layout->addWidget(nameLabel);
 
     // Créer un QLabel pour afficher le record
-    QTime recordEasy = profile->getRecord(1);
-    QLabel *recordLabel = new QLabel(QString("Record: %1").arg(recordEasy.toString("hh:mm:ss")));
-    layout->addWidget(recordLabel);
+    QTime recordEasy = profile->getRecord(0);
+    // regarder si le record est invalide
+    if(recordEasy == QTime(0,0,-1)){
+        QLabel *recordLabel = new QLabel(QString("pas de record"));
+        layout->addWidget(recordLabel);
+    }
+    else{
+        QLabel *recordLabel = new QLabel(QString("Record: %1").arg(recordEasy.toString("hh:mm:ss")));
+        layout->addWidget(recordLabel);
+    }
+
 
 
 

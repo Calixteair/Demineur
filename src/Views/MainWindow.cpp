@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent)
     mainMenu = new MainMenu(this);
 
     QString profilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/profiles";
+
+
+
+    
     qDebug() << profilesPath;
     QDir().mkpath(profilesPath);
 
